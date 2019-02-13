@@ -56,7 +56,8 @@ export const getPath = (parentRouterId) => {
     if (!stackEntry) {
         throw 'wth';
     }
-    return stackEntry.reducedPath || window.location.pathname;
+
+    return stackEntry.reducedPath !== null ? stackEntry.reducedPath || '/' : window.location.pathname;
 };
 
 const processStack = () => Object.keys(stack).forEach(process);
@@ -235,9 +236,22 @@ export const useRoutes = (routeObj) => {
         return null;
     }
 
-    const result = stackObj.resultFunc(stackObj.resultProps);
+    const RouteContext = ({children}) => <ParentContext.Provider value={routerId}>{children}</ParentContext.Provider>;
 
-    return stackObj.passContext
-        ? <ParentContext.Provider value={routerId}>{result}</ParentContext.Provider>
+    const originalResult = stackObj.resultFunc(stackObj.resultProps);
+    let result = originalResult;
+
+    const wrapper = function () {
+        return (
+            <RouteContext>{originalResult.apply(originalResult, arguments)}</RouteContext>
+        );
+    };
+
+    if (typeof originalResult === 'function') {
+        result = wrapper;
+    }
+
+    return stackObj.passContext && React.isValidElement(result) && result.type !== RouteContext
+        ? <RouteContext>{result}</RouteContext>
         : result;
 };
