@@ -1,0 +1,19 @@
+{
+  "name": "hookrouter",
+  "version": "1.0.0",
+  "description": "A hook based router for React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Paratron/hookrouter.git"
+  },
+  "author": "Christian Engel <christian.engel@wearekiss.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Paratron/hookrouter/issues"
+  },
+  "homepage": "https://github.com/Paratron/hookrouter#readme"
+}
