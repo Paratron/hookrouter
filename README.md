@@ -138,3 +138,21 @@ const AboutArea = () => {
     );
 }
 ```
+
+### Using redirects
+```jsx harmony
+import {useRoutes, useRedirect} from 'hookrouter';
+
+const routes = {
+    '/greeting': () => 'Nice to meat you 🤤 ',
+};
+
+const MyApp = () => {
+    useRedirect('/', '/greeting');
+    const routeResult = useRoutes(routes);
+
+    return routeResult || 'Not found';
+}
+```
+Rule of thumb: apply the redirect right before you use the routing and everything
+is fine ;)

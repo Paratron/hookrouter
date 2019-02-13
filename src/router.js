@@ -3,7 +3,7 @@ import React from 'react';
 let preparedRoutes = {};
 let stack = {};
 
-const ParentContext = React.createContext(null);
+export const ParentContext = React.createContext(null);
 
 /**
  * Pass a route string to this function to receive a regular expression.
@@ -48,7 +48,7 @@ export const navigate = (url) => {
  * @param {string} [parentRouterId]
  * @returns {string}
  */
-const getPath = (parentRouterId) => {
+export const getPath = (parentRouterId) => {
     if (!parentRouterId) {
         return window.location.pathname;
     }
