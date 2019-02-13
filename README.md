@@ -12,16 +12,16 @@ A quick example:
 import {useRoutes} from 'hookrouter';
 
 const routes = {
-	'/': () => <HomePage />,
-	'/about': () => <AboutPage />,
-	'/products': () => <ProductOverview />,
-	'/products/:id': ({id}) => <ProductDetails id={id} />
-;
+    '/': () => <HomePage />,
+    '/about': () => <AboutPage />,
+    '/products': () => <ProductOverview />,
+    '/products/:id': ({id}) => <ProductDetails id={id} />
+};
 	
 const MyApp = () => {
-	const routeResult = useRoutes(routes);
-	
-	return routeResult || <NotFoundPage />;
+    const routeResult = useRoutes(routes);
+    
+    return routeResult || <NotFoundPage />;
 }
 ```
 Routes are defined as an object. Keys are the routes, which are matched
@@ -42,23 +42,23 @@ or by importing the modified link component `A`.
 import {useRoutes, navigate} from 'hookrouter';
 
 const routes = {
-	'/': () => <HomePage />,
-	'/products/:id': ({id}) => <ProductDetails id={id} />
-;
+    '/': () => <HomePage />,
+    '/products/:id': ({id}) => <ProductDetails id={id} />
+};
 	
 const handleClick = () => {
-	navigate('/products/12');
+    navigate('/products/12');
 };
 	
 const MyApp = () => {
-	const routeResult = useRoutes(routes);
-	
-	return (
-		<div>
-			<Button onClick={handleClick}>Show my product</Button>
-			{routeResult || <NotFoundPage />}			
-		</div>		
-	);
+    const routeResult = useRoutes(routes);
+    
+    return (
+        <div>
+            <Button onClick={handleClick}>Show my product</Button>
+            {routeResult || <NotFoundPage />}			
+        </div>		
+    );
 }
 ```
 
@@ -67,18 +67,18 @@ const MyApp = () => {
 import {useRoutes, A} from 'hookrouter';
 
 const routes = {
-	'/': () => <HomePage />,
-	'/products/:id': ({id}) => <ProductDetails id={id} />
-;
+    '/': () => <HomePage />,
+    '/products/:id': ({id}) => <ProductDetails id={id} />
+};
 	
 const MyApp = () => {
-	const routeResult = useRoutes(routes);
+    const routeResult = useRoutes(routes);
 	
 	return (
-		<div>
-			<A href="/products/12">Show my product</A>
-			{routeResult || <NotFoundPage />}			
-		</div>		
+        <div>
+            <A href="/products/12">Show my product</A>
+            {routeResult || <NotFoundPage />}			
+        </div>		
 	);
 }
 ```
@@ -97,19 +97,19 @@ This is your main application:
 import {useRoutes, A} from 'hookrouter';
 
 const routes = {
-	'/': () => <HomePage />,
-	'/about*': () => <AboutArea />
-;
+    '/': () => <HomePage />,
+    '/about*': () => <AboutArea />
+};
 	
 const MyApp = () => {
-	const routeResult = useRoutes(routes);
+    const routeResult = useRoutes(routes);
 	
-	return (
-		<div>
-			<A href="/about/people">Show about area</A>
-			{routeResult || <NotFoundPage />}			
-		</div>		
-	);
+    return (
+        <div>
+            <A href="/about/people">Show about area</A>
+            {routeResult || <NotFoundPage />}			
+        </div>		
+    );
 }
 ```
 The asterisk `*` at the end of the route indicates that the URL will continue
@@ -122,19 +122,19 @@ See whats done now inside the `<AboutArea />` component:
 import {useRoutes, A} from 'hookrouter';
 
 const routes = {
-	'/people': () => 'We are happy people',
-	'/company': () => 'Our company is nice'
-;
-	
+    '/people': () => 'We are happy people',
+    '/company': () => 'Our company is nice'
+};
+
 const AboutArea = () => {
-	const routeResult = useRoutes(routes);
-	
-	return (
-		<div className="about">
-			<A href="people">About people</A>
-			<A href="company">About our company</A>
-			{routeResult}
-		</div>
-	);
+    const routeResult = useRoutes(routes);
+
+    return (
+        <div className="about">
+            <A href="people">About people</A>
+            <A href="company">About our company</A>
+            {routeResult}
+        </div>
+    );
 }
 ```
