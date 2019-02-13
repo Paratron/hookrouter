@@ -1,11 +1,11 @@
 import A from './Link';
 import {
-	navigate,
-	useRoutes
+    navigate,
+    useRoutes
 } from './router';
 
 export {
-	A,
-	navigate,
-	useRoutes,
+    A,
+    navigate,
+    useRoutes,
 };

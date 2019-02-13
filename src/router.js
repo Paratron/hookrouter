@@ -13,23 +13,23 @@ const ParentContext = React.createContext(null);
  * @returns {Array} [RegExp, propList]
  */
 const prepareRoute = (inRoute) => {
-	if (preparedRoutes[inRoute]) {
-		return preparedRoutes[inRoute];
-	}
+    if (preparedRoutes[inRoute]) {
+        return preparedRoutes[inRoute];
+    }
 
-	const preparedRoute = [
-		new RegExp(`${inRoute.substr(0, 1) === '*' ? '' : '^'}${inRoute.replace(/:[a-zA-Z]+/g, '(.+?)').replace(/\*/g, '')}${inRoute.substr(-1,) === '*' ? '' : '$'}`)
-	];
+    const preparedRoute = [
+        new RegExp(`${inRoute.substr(0, 1) === '*' ? '' : '^'}${inRoute.replace(/:[a-zA-Z]+/g, '(.+?)').replace(/\*/g, '')}${inRoute.substr(-1,) === '*' ? '' : '$'}`)
+    ];
 
-	const propList = inRoute.match(/:[a-zA-Z]+/g);
-	preparedRoute.push(
-		propList
-			? propList.map(paramName => paramName.substr(1))
-			: []
-	);
+    const propList = inRoute.match(/:[a-zA-Z]+/g);
+    preparedRoute.push(
+        propList
+            ? propList.map(paramName => paramName.substr(1))
+            : []
+    );
 
-	preparedRoutes[inRoute] = preparedRoute;
-	return preparedRoute;
+    preparedRoutes[inRoute] = preparedRoute;
+    return preparedRoute;
 };
 
 /**
@@ -37,8 +37,8 @@ const prepareRoute = (inRoute) => {
  * @param {string} url
  */
 export const navigate = (url) => {
-	window.history.pushState(null, null, url);
-	processStack();
+    window.history.pushState(null, null, url);
+    processStack();
 };
 
 /**
@@ -49,14 +49,14 @@ export const navigate = (url) => {
  * @returns {string}
  */
 const getPath = (parentRouterId) => {
-	if (!parentRouterId) {
-		return window.location.pathname;
-	}
-	const stackEntry = stack[parentRouterId];
-	if (!stackEntry) {
-		throw 'wth';
-	}
-	return stackEntry.reducedPath || window.location.pathname;
+    if (!parentRouterId) {
+        return window.location.pathname;
+    }
+    const stackEntry = stack[parentRouterId];
+    if (!stackEntry) {
+        throw 'wth';
+    }
+    return stackEntry.reducedPath || window.location.pathname;
 };
 
 const processStack = () => Object.keys(stack).forEach(process);
@@ -70,24 +70,24 @@ const processStack = () => Object.keys(stack).forEach(process);
  * @return {boolean}
  */
 const objectsEqual = (objA, objB) => {
-	const objAKeys = Object.keys(objA).sort();
-	const objBKeys = Object.keys(objB).sort();
+    const objAKeys = Object.keys(objA).sort();
+    const objBKeys = Object.keys(objB).sort();
 
-	if (objAKeys.length !== objBKeys.length) {
-		return false;
-	}
+    if (objAKeys.length !== objBKeys.length) {
+        return false;
+    }
 
-	for (let i = 0; i < objAKeys.length; i++) {
-		if (objAKeys[i] !== objBKeys[i]) {
-			return false;
-		}
-		const key = objAKeys[i];
+    for (let i = 0; i < objAKeys.length; i++) {
+        if (objAKeys[i] !== objBKeys[i]) {
+            return false;
+        }
+        const key = objAKeys[i];
 
-		if (objAKeys[key] !== objBKeys[key]) {
-			return false;
-		}
-	}
-	return true;
+        if (objAKeys[key] !== objBKeys[key]) {
+            return false;
+        }
+    }
+    return true;
 };
 
 window.addEventListener('popstate', processStack);
@@ -99,86 +99,86 @@ const emptyFunc = () => null;
  * @param routerId
  */
 const process = (routerId) => {
-	const {
-		parentRouterId,
-		routes,
-		setUpdate,
-		resultFunc,
-		resultProps,
-		reducedPath: previousReducedPath
-	} = stack[routerId];
+    const {
+        parentRouterId,
+        routes,
+        setUpdate,
+        resultFunc,
+        resultProps,
+        reducedPath: previousReducedPath
+    } = stack[routerId];
 
-	const currentPath = getPath(parentRouterId);
-	let route = null;
-	let targetFunction = null;
-	let targetProps = null;
-	let reducedPath = null;
-	let anyMatched = false;
+    const currentPath = getPath(parentRouterId);
+    let route = null;
+    let targetFunction = null;
+    let targetProps = null;
+    let reducedPath = null;
+    let anyMatched = false;
 
-	for (let i = 0; i < routes.length; i++) {
-		[route, targetFunction] = routes[i];
-		const [regex, groupNames] = preparedRoutes[route]
-			? preparedRoutes[route]
-			: prepareRoute(route);
+    for (let i = 0; i < routes.length; i++) {
+        [route, targetFunction] = routes[i];
+        const [regex, groupNames] = preparedRoutes[route]
+            ? preparedRoutes[route]
+            : prepareRoute(route);
 
-		const result = currentPath.match(regex);
-		if (!result) {
-			targetFunction = emptyFunc;
-			continue;
-		}
+        const result = currentPath.match(regex);
+        if (!result) {
+            targetFunction = emptyFunc;
+            continue;
+        }
 
-		if (groupNames.length) {
-			targetProps = {};
-			for (let j = 0; j < groupNames.length; j++) {
-				targetProps[groupNames[j]] = result[j + 1];
-			}
-		}
+        if (groupNames.length) {
+            targetProps = {};
+            for (let j = 0; j < groupNames.length; j++) {
+                targetProps[groupNames[j]] = result[j + 1];
+            }
+        }
 
-		reducedPath = currentPath.replace(result[0], '');
-		anyMatched = true;
-		break;
-	}
+        reducedPath = currentPath.replace(result[0], '');
+        anyMatched = true;
+        break;
+    }
 
-	if (!stack[routerId]) {
-		return;
-	}
+    if (!stack[routerId]) {
+        return;
+    }
 
-	if (!anyMatched) {
-		route = null;
-		targetFunction = null;
-		targetProps = null;
-		reducedPath = null;
-	}
+    if (!anyMatched) {
+        route = null;
+        targetFunction = null;
+        targetProps = null;
+        reducedPath = null;
+    }
 
-	const funcsDiffer = resultFunc !== targetFunction;
-	const pathDiffer = reducedPath !== previousReducedPath;
-	let propsDiffer = true;
+    const funcsDiffer = resultFunc !== targetFunction;
+    const pathDiffer = reducedPath !== previousReducedPath;
+    let propsDiffer = true;
 
-	if (!funcsDiffer) {
-		if (!resultProps && !targetProps) {
-			propsDiffer = false;
-		} else {
-			propsDiffer = !(resultProps && targetProps && objectsEqual(resultProps, targetProps) === true);
-		}
+    if (!funcsDiffer) {
+        if (!resultProps && !targetProps) {
+            propsDiffer = false;
+        } else {
+            propsDiffer = !(resultProps && targetProps && objectsEqual(resultProps, targetProps) === true);
+        }
 
-		if (!propsDiffer) {
-			if (!pathDiffer) {
-				return;
-			}
-		}
-	}
+        if (!propsDiffer) {
+            if (!pathDiffer) {
+                return;
+            }
+        }
+    }
 
-	Object.assign(stack[routerId], {
-		resultFunc: targetFunction,
-		resultProps: targetProps,
-		reducedPath,
-		matchedRoute: route,
-		passContext: route ? route.substr(-1) === '*' : false
-	});
+    Object.assign(stack[routerId], {
+        resultFunc: targetFunction,
+        resultProps: targetProps,
+        reducedPath,
+        matchedRoute: route,
+        passContext: route ? route.substr(-1) === '*' : false
+    });
 
-	if (funcsDiffer || propsDiffer) {
-		setUpdate(Date.now());
-	}
+    if (funcsDiffer || propsDiffer) {
+        setUpdate(Date.now());
+    }
 };
 
 /**
@@ -190,54 +190,54 @@ const process = (routerId) => {
  * @param {object} routeObj {"/someRoute": () => <Example />}
  */
 export const useRoutes = (routeObj) => {
-	// Each router gets an internal id to look them up again.
-	const [routerId] = React.useState(Math.random().toString());
-	// This will be called when the URL has changed and the router does not match
-	// anymore. It triggers a re-render of the component using this hook.
-	const setUpdate = React.useState(0)[1];
-	// Needed to create nested routers which use only a subset of the URL.
-	const parentRouterId = React.useContext(ParentContext);
+    // Each router gets an internal id to look them up again.
+    const [routerId] = React.useState(Math.random().toString());
+    // This will be called when the URL has changed and the router does not match
+    // anymore. It triggers a re-render of the component using this hook.
+    const setUpdate = React.useState(0)[1];
+    // Needed to create nested routers which use only a subset of the URL.
+    const parentRouterId = React.useContext(ParentContext);
 
-	React.useEffect(() => {
-		const s = stack[routerId];
-		if (s) {
-			clearTimeout(s.deathTimer);
-		}
-		return () => {
-			s.deathTimer = setTimeout(() => {
-				delete stack[routerId];
-			}, 100);
-		};
-	});
+    React.useEffect(() => {
+        const s = stack[routerId];
+        if (s) {
+            clearTimeout(s.deathTimer);
+        }
+        return () => {
+            s.deathTimer = setTimeout(() => {
+                delete stack[routerId];
+            }, 100);
+        };
+    });
 
-	let stackObj = stack[routerId];
+    let stackObj = stack[routerId];
 
-	if (!stackObj) {
-		stackObj = {
-			routerId,
-			routes: Object.entries(routeObj),
-			setUpdate,
-			parentRouterId,
-			matchedRoute: null,
-			reducedPath: null,
-			resultFunc: null,
-			passContext: false,
-			resultProps: {},
-			deathTimer: null,
-		};
+    if (!stackObj) {
+        stackObj = {
+            routerId,
+            routes: Object.entries(routeObj),
+            setUpdate,
+            parentRouterId,
+            matchedRoute: null,
+            reducedPath: null,
+            resultFunc: null,
+            passContext: false,
+            resultProps: {},
+            deathTimer: null,
+        };
 
-		stack[routerId] = stackObj;
+        stack[routerId] = stackObj;
 
-		process(routerId);
-	}
+        process(routerId);
+    }
 
-	if (!stackObj.matchedRoute) {
-		return null;
-	}
+    if (!stackObj.matchedRoute) {
+        return null;
+    }
 
-	const result = stackObj.resultFunc(stackObj.resultProps);
+    const result = stackObj.resultFunc(stackObj.resultProps);
 
-	return stackObj.passContext
-		? <ParentContext.Provider value={routerId}>{result}</ParentContext.Provider>
-		: result;
+    return stackObj.passContext
+        ? <ParentContext.Provider value={routerId}>{result}</ParentContext.Provider>
+        : result;
 };
