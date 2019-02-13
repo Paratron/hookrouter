@@ -18,7 +18,7 @@ const prepareRoute = (inRoute) => {
     }
 
     const preparedRoute = [
-        new RegExp(`${inRoute.substr(0, 1) === '*' ? '' : '^'}${inRoute.replace(/:[a-zA-Z]+/g, '(.+?)').replace(/\*/g, '')}${inRoute.substr(-1,) === '*' ? '' : '$'}`)
+        new RegExp(`${inRoute.substr(0, 1) === '*' ? '' : '^'}${inRoute.replace(/:[a-zA-Z]+/g, '([^/]+)').replace(/\*/g, '')}${inRoute.substr(-1,) === '*' ? '' : '$'}`)
     ];
 
     const propList = inRoute.match(/:[a-zA-Z]+/g);

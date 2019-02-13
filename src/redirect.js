@@ -6,7 +6,7 @@ const useRedirect = (fromURL, toURL) => {
     const currentPath = getPath(parentRouterId);
 
     if(currentPath === fromURL){
-        navigate(toURL);
+        navigate(parentRouterId ? `.${toURL}` : toURL);
     }
 };
 
