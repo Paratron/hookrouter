@@ -84,7 +84,7 @@ const objectsEqual = (objA, objB) => {
         }
         const key = objAKeys[i];
 
-        if (objAKeys[key] !== objBKeys[key]) {
+        if (objA[key] !== objB[key]) {
             return false;
         }
     }
