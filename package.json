@@ -1,19 +1,33 @@
 {
   "name": "hookrouter",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "A hook based router for React",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel ./src --out-dir ./dist -s inline"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Paratron/hookrouter.git"
   },
+  "files": [
+    "dist*"
+  ],
   "author": "Christian Engel <christian.engel@wearekiss.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Paratron/hookrouter/issues"
   },
-  "homepage": "https://github.com/Paratron/hookrouter#readme"
+  "homepage": "https://github.com/Paratron/hookrouter#readme",
+  "peerDependencies": {
+    "react": "^16.8.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0"
+  }
 }
