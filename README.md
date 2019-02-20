@@ -1,10 +1,15 @@
 # React Hook Router
 
 A different approach to utilize a routing functionality in react.
-This is a rough test right now and should not be used in production until
-I find the time to write a few unit tests for it.
+I am using this router in an application which is running in production right now without any errors so far.
+Until I found the time to write some real unit/integration tests for this router, it will remain in beta tough.
 
 Tested with `React 16.8.1`.
+
+## How to install
+Well, this is straightforward:
+
+    npm i hookrouter
 
 ## How to use
 A quick example:
