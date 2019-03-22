@@ -1,5 +1,6 @@
 import React from 'react';
 
+const isNode = typeof module !== 'undefined' && module.exports;
 let preparedRoutes = {};
 let stack = {};
 
@@ -37,9 +38,19 @@ const prepareRoute = (inRoute) => {
  * @param {string} url
  */
 export const navigate = (url) => {
+	if(isNode){
+		return;
+	}
     window.history.pushState(null, null, url);
     processStack();
 };
+
+let customPath = '';
+/**
+ * Enables you to manually set the path from outside in a nodeJS environment, where window.history is not available.
+ * @param {string} inPath
+ */
+export const setPath = (inPath) => customPath = inPath;
 
 /**
  * Called from within the router. This returns either the current windows url path
@@ -50,7 +61,7 @@ export const navigate = (url) => {
  */
 export const getPath = (parentRouterId) => {
     if (!parentRouterId) {
-        return window.location.pathname;
+    	return isNode ? customPath : window.location.pathname;
     }
     const stackEntry = stack[parentRouterId];
     if (!stackEntry) {
@@ -178,7 +189,7 @@ const process = (routerId) => {
     });
 
     if (funcsDiffer || propsDiffer) {
-        setUpdate(Date.now());
+        setUpdate([routerId, Date.now()]);
     }
 };
 
@@ -192,24 +203,12 @@ const process = (routerId) => {
  */
 export const useRoutes = (routeObj) => {
     // Each router gets an internal id to look them up again.
-    const [routerId] = React.useState(Math.random().toString());
-    // This will be called when the URL has changed and the router does not match
-    // anymore. It triggers a re-render of the component using this hook.
-    const setUpdate = React.useState(0)[1];
+    const [[routerId], setUpdate] = React.useState(['rtr_' + Math.random().toString().split('.')[1], 0]);
     // Needed to create nested routers which use only a subset of the URL.
     const parentRouterId = React.useContext(ParentContext);
 
-    React.useEffect(() => {
-        const s = stack[routerId];
-        if (s) {
-            clearTimeout(s.deathTimer);
-        }
-        return () => {
-            s.deathTimer = setTimeout(() => {
-                delete stack[routerId];
-            }, 100);
-        };
-    });
+    // Removes the router from the stack after component unmount - it won't be processed anymore.
+    React.useEffect(() => () => { delete stack[routerId] }, [routerId]);
 
     let stackObj = stack[routerId];
 
@@ -231,6 +230,8 @@ export const useRoutes = (routeObj) => {
 
         process(routerId);
     }
+
+    React.useDebugValue(stackObj.matchedRoute);
 
     if (!stackObj.matchedRoute) {
         return null;
