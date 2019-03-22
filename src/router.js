@@ -1,6 +1,6 @@
 import React from 'react';
 
-const isNode = typeof module !== 'undefined' && module.exports;
+const isNode = process !== undefined;
 let preparedRoutes = {};
 let stack = {};
 
@@ -61,7 +61,7 @@ export const setPath = (inPath) => customPath = inPath;
  */
 export const getPath = (parentRouterId) => {
     if (!parentRouterId) {
-    	return isNode ? customPath : window.location.pathname;
+    	return isNode ? customPath : window.location.pathname || '/';
     }
     const stackEntry = stack[parentRouterId];
     if (!stackEntry) {
