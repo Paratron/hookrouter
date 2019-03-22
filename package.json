@@ -5,14 +5,14 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel ./src --out-dir ./dist -s inline"
+    "prepublishOnly": "babel ./src --out-dir ./dist -s inline"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Paratron/hookrouter.git"
   },
   "files": [
-    "dist*"
+    "dist/*"
   ],
   "author": "Christian Engel <christian.engel@wearekiss.com>",
   "license": "ISC",
@@ -26,8 +26,8 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/preset-env": "^7.3.1",
-    "@babel/preset-react": "^7.0.0"
+    "@babel/preset-react": "^7.0.0",
+    "react": "16.8.2"
   }
 }
