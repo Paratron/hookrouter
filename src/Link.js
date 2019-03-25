@@ -7,7 +7,7 @@ const A = (props) => {
 	const onClick = (e) => {
 		e.preventDefault();
 
-		navigate(e.target.href);
+		navigate(e.currentTarget.href);
 
 		if (originalOnClick) {
 			originalOnClick(e);
