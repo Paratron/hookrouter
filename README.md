@@ -6,6 +6,8 @@ Until I found the time to write some real unit/integration tests for this router
 
 Tested with `React 16.8.1`.
 
+You can read more in-depth article [here](https://parastudios.de/modern-and-clean-routing-with-hooks/)
+
 ## How to install
 Well, this is straightforward:
 
