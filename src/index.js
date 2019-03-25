@@ -1,13 +1,13 @@
 import A from './Link';
 import useRedirect from './redirect';
 import {
-    navigate,
-    useRoutes
+	navigate,
+	useRoutes
 } from './router';
 
 export {
-    A,
-    useRedirect,
-    navigate,
-    useRoutes,
+	A,
+	useRedirect,
+	navigate,
+	useRoutes,
 };
