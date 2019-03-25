@@ -190,7 +190,7 @@ const process = (routerId) => {
 	});
 
 	if (funcsDiffer || propsDiffer) {
-		setUpdate([routerId, Date.now()]);
+		setUpdate(Date.now());
 	}
 };
 
