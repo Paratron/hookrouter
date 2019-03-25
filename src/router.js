@@ -3,6 +3,7 @@ import React from 'react';
 const isNode = process !== undefined;
 let preparedRoutes = {};
 let stack = {};
+let componentId = 1;
 
 export const ParentContext = React.createContext(null);
 
@@ -203,7 +204,8 @@ const process = (routerId) => {
  */
 export const useRoutes = (routeObj) => {
 	// Each router gets an internal id to look them up again.
-	const [[routerId], setUpdate] = React.useState(['rtr_' + Math.random().toString().split('.')[1], 0]);
+	const [routerId] = React.useState('rtr_' + componentId++);
+	const setUpdate = React.useState(0)[1];
 	// Needed to create nested routers which use only a subset of the URL.
 	const parentRouterId = React.useContext(ParentContext);
 
