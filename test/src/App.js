@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRoutes, useRedirect, useQueryParams, A} from '../../dist';
+import {useRoutes, useRedirect, useQueryParams, useInterceptor, A} from '../../dist';
 
 const products = {
 	"1": "Rainbow Fish",
@@ -23,6 +23,24 @@ const About = () => (
 		</p>
 	</React.Fragment>
 );
+const LockIn = () => {
+	const stopInterception = useInterceptor((currentPath, nextPath) => {
+		console.log(currentPath, nextPath);
+		return currentPath;
+	});
+
+	return (
+		<React.Fragment>
+			<h3>Oh dear.</h3>
+			<p>
+				You are not allowed to leave this page.
+			</p>
+			<p>
+				<button onClick={stopInterception}>Release me!</button>
+			</p>
+		</React.Fragment>
+	);
+};
 const Products = () => {
 	const [queryParams, setQueryParams] = useQueryParams();
 
@@ -75,6 +93,7 @@ const Product = ({id}) => {
 const routes = {
 	'/welcome': () => <Home/>,
 	'/about': () => <About/>,
+	'/prison': () => <LockIn/>,
 	'/product': () => <Products/>,
 	'/product/:id*': ({id}) => <Product id={id}/>
 };
@@ -89,6 +108,7 @@ const App = () => {
 			<nav>
 				<A href="/">Home</A><br/>
 				<A href="/about">About</A><br/>
+				<A href="/prison">Route with Lock-In</A><br />
 				<A href="/product">Products</A>
 			</nav>
 			<main>
