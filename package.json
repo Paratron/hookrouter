@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "babel ./src --out-dir ./dist -s inline"
+    "prepublishOnly": "babel ./src --out-dir ./dist -s inline",
+    "preTest": "npm run prepublishOnly && babel ./test/src --out-dir ./test/dist -s inline && npm run webpack",
+    "webpack": "webpack ./test/dist/index.js -o ./test/dist/pack.js --devtool source-map",
+    "testServer": "http-server ./test"
   },
   "repository": {
     "type": "git",
@@ -28,6 +31,11 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
-    "react": "16.8.2"
+    "http-server": "0.11.1",
+    "node": "11.12.0",
+    "react": "16.8.2",
+    "react-dom": "16.8.5",
+    "webpack": "4.29.6",
+    "webpack-cli": "3.3.0"
   }
 }
