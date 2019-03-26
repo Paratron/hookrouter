@@ -1,6 +1,7 @@
 import React from 'react';
+import isNode from './isNode';
+import {setQueryParams} from './queryParams';
 
-const isNode = process !== undefined;
 let preparedRoutes = {};
 let stack = {};
 let componentId = 1;
@@ -36,22 +37,39 @@ const prepareRoute = (inRoute) => {
 
 /**
  * Virtually navigates the browser to the given URL and re-processes all routers.
- * @param {string} url
+ * @param {string} url The URL to navigate to. Do not mix adding GET params here and using the `getParams` argument.
+ * @param {object} [queryParams] Key/Value pairs to convert into get parameters to be appended to the URL.
  */
-export const navigate = (url) => {
+export const navigate = (url, queryParams) => {
 	if (isNode) {
+		setPath(url);
+		processStack();
 		return;
 	}
 	window.history.pushState(null, null, url);
 	processStack();
+
+	if (queryParams) {
+		setQueryParams(queryParams);
+	}
 };
 
-let customPath = '';
+let customPath = '/';
 /**
  * Enables you to manually set the path from outside in a nodeJS environment, where window.history is not available.
  * @param {string} inPath
+ * @param {object} [queryParams] Optionally add an object of query parameters to the URL.
  */
-export const setPath = (inPath) => customPath = inPath;
+export const setPath = (inPath) => {
+	const url = require('url');
+	customPath = url.resolve(customPath, inPath);
+};
+
+/**
+ * Returns the current path of the router.
+ * @returns {string}
+ */
+export const getPath = () => customPath;
 
 /**
  * Called from within the router. This returns either the current windows url path
@@ -60,7 +78,7 @@ export const setPath = (inPath) => customPath = inPath;
  * @param {string} [parentRouterId]
  * @returns {string}
  */
-export const getPath = (parentRouterId) => {
+export const getWorkingPath = (parentRouterId) => {
 	if (!parentRouterId) {
 		return isNode ? customPath : window.location.pathname || '/';
 	}
@@ -103,7 +121,9 @@ const objectsEqual = (objA, objB) => {
 	return true;
 };
 
-window.addEventListener('popstate', processStack);
+if (!isNode) {
+	window.addEventListener('popstate', processStack);
+}
 
 const emptyFunc = () => null;
 
@@ -121,7 +141,7 @@ const process = (routerId) => {
 		reducedPath: previousReducedPath
 	} = stack[routerId];
 
-	const currentPath = getPath(parentRouterId);
+	const currentPath = getWorkingPath(parentRouterId);
 	let route = null;
 	let targetFunction = null;
 	let targetProps = null;
