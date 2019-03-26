@@ -1,10 +1,23 @@
 import React from 'react';
 import isNode from './isNode';
 import {setQueryParams} from './queryParams';
+import {interceptRoute} from './interceptor';
 
 let preparedRoutes = {};
 let stack = {};
 let componentId = 1;
+let currentPath = isNode ? '' : location.pathname;
+
+const resolvePath = (inPath) => {
+	if(isNode){
+		const url = require('url');
+		return url.resolve(currentPath, inPath);
+	}
+
+	const current = new URL(currentPath, location.href);
+	const resolved = new URL(inPath, current);
+	return resolved.pathname;
+};
 
 export const ParentContext = React.createContext(null);
 
@@ -41,6 +54,8 @@ const prepareRoute = (inRoute) => {
  * @param {object} [queryParams] Key/Value pairs to convert into get parameters to be appended to the URL.
  */
 export const navigate = (url, queryParams) => {
+	url = currentPath = interceptRoute(currentPath, resolvePath(url));
+
 	if (isNode) {
 		setPath(url);
 		processStack();
@@ -122,7 +137,13 @@ const objectsEqual = (objA, objB) => {
 };
 
 if (!isNode) {
-	window.addEventListener('popstate', processStack);
+	window.addEventListener('popstate', () => {
+		const nextPath = currentPath = interceptRoute(currentPath, location.pathname);
+		if(nextPath !== location.pathname){
+			history.replaceState(null, null, nextPath);
+		}
+		processStack();
+	});
 }
 
 const emptyFunc = () => null;
