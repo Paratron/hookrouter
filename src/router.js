@@ -139,7 +139,13 @@ const objectsEqual = (objA, objB) => {
 
 if (!isNode) {
 	window.addEventListener('popstate', () => {
-		const nextPath = currentPath = interceptRoute(currentPath, location.pathname);
+		const nextPath = interceptRoute(currentPath, location.pathname);
+
+		if(!nextPath || nextPath === currentPath){
+			history.pushState(null, null, currentPath);
+			return;
+		}
+
 		if (nextPath !== location.pathname) {
 			history.replaceState(null, null, nextPath);
 		}
