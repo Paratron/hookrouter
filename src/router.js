@@ -117,24 +117,15 @@ const processStack = () => Object.keys(stack).forEach(process);
  * @return {boolean}
  */
 const objectsEqual = (objA, objB) => {
-	const objAKeys = Object.keys(objA).sort();
-	const objBKeys = Object.keys(objB).sort();
+	const objAKeys = Object.keys(objA);
+	const objBKeys = Object.keys(objB);
 
-	if (objAKeys.length !== objBKeys.length) {
-		return false;
-	}
+	const valueIsEqual = key => objB.hasOwnProperty(key) && objA[key] === objB[key];
 
-	for (let i = 0; i < objAKeys.length; i++) {
-		if (objAKeys[i] !== objBKeys[i]) {
-			return false;
-		}
-		const key = objAKeys[i];
-
-		if (objA[key] !== objB[key]) {
-			return false;
-		}
-	}
-	return true;
+	return (
+		objAKeys.length === objBKeys.length
+		&& objectAKeys.every(valueIsEqual)
+	);
 };
 
 if (!isNode) {
