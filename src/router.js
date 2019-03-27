@@ -135,10 +135,12 @@ const objectsEqual = (objA, objB) => {
 };
 
 if (!isNode) {
-	window.addEventListener('popstate', () => {
+	window.addEventListener('popstate', (e) => {
 		const nextPath = interceptRoute(currentPath, location.pathname);
 
 		if(!nextPath || nextPath === currentPath){
+			e.preventDefault();
+			e.stopPropagation();
 			history.pushState(null, null, currentPath);
 			return;
 		}
