@@ -9,7 +9,7 @@ let componentId = 1;
 let currentPath = isNode ? '' : location.pathname;
 
 const resolvePath = (inPath) => {
-	if(isNode){
+	if (isNode) {
 		const url = require('url');
 		return url.resolve(currentPath, inPath);
 	}
@@ -52,8 +52,9 @@ const prepareRoute = (inRoute) => {
  * Virtually navigates the browser to the given URL and re-processes all routers.
  * @param {string} url The URL to navigate to. Do not mix adding GET params here and using the `getParams` argument.
  * @param {object} [queryParams] Key/Value pairs to convert into get parameters to be appended to the URL.
+ * @param {boolean} [replace=false] Should the navigation be done with a history replace to prevent back navigation by the user
  */
-export const navigate = (url, queryParams) => {
+export const navigate = (url, queryParams = null, replace = false) => {
 	url = currentPath = interceptRoute(currentPath, resolvePath(url));
 
 	if (isNode) {
@@ -61,7 +62,7 @@ export const navigate = (url, queryParams) => {
 		processStack();
 		return;
 	}
-	window.history.pushState(null, null, url);
+	window.history[`${replace ? 'replace' : 'push'}State`](null, null, url);
 	processStack();
 
 	if (queryParams) {
@@ -139,7 +140,7 @@ const objectsEqual = (objA, objB) => {
 if (!isNode) {
 	window.addEventListener('popstate', () => {
 		const nextPath = currentPath = interceptRoute(currentPath, location.pathname);
-		if(nextPath !== location.pathname){
+		if (nextPath !== location.pathname) {
 			history.replaceState(null, null, nextPath);
 		}
 		processStack();
