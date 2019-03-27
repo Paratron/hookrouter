@@ -51,11 +51,17 @@ const prepareRoute = (inRoute) => {
 /**
  * Virtually navigates the browser to the given URL and re-processes all routers.
  * @param {string} url The URL to navigate to. Do not mix adding GET params here and using the `getParams` argument.
- * @param {object} [queryParams] Key/Value pairs to convert into get parameters to be appended to the URL.
  * @param {boolean} [replace=false] Should the navigation be done with a history replace to prevent back navigation by the user
+ * @param {object} [queryParams] Key/Value pairs to convert into get parameters to be appended to the URL.
  */
-export const navigate = (url, queryParams = null, replace = false) => {
-	url = currentPath = interceptRoute(currentPath, resolvePath(url));
+export const navigate = (url, replace = false, queryParams = null) => {
+	url = interceptRoute(currentPath, resolvePath(url));
+
+	if(!url || url === currentPath){
+		return;
+	}
+
+	currentPath = url;
 
 	if (isNode) {
 		setPath(url);
