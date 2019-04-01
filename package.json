@@ -1,6 +1,6 @@
 {
   "name": "hookrouter",
-  "version": "1.1.0-beta",
+  "version": "1.1.0",
   "description": "A hook based router for React",
   "main": "dist/index.js",
   "scripts": {
