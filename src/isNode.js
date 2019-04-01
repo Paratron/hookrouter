@@ -4,6 +4,4 @@ try {
 } catch (e) {
 }
 
-const isNode = wIsNode;
-
-export default isNode;
+export default wIsNode;

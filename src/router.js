@@ -106,7 +106,6 @@ let customPath = '/';
 /**
  * Enables you to manually set the path from outside in a nodeJS environment, where window.history is not available.
  * @param {string} inPath
- * @param {object} [queryParams] Optionally add an object of query parameters to the URL.
  */
 export const setPath = (inPath) => {
 	const url = require('url');
@@ -156,7 +155,7 @@ const objectsEqual = (objA, objB) => {
 
 	return (
 		objAKeys.length === objBKeys.length
-		&& objectAKeys.every(valueIsEqual)
+		&& objAKeys.every(valueIsEqual)
 	);
 };
 
