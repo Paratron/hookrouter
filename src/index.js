@@ -8,6 +8,8 @@ import {
 	useRoutes,
 	setPath,
 	getPath,
+	setBasepath,
+	getBasepath,
 } from './router';
 
 export {
@@ -21,5 +23,7 @@ export {
 	setPath,
 	getPath,
 	setQueryParams,
-	getQueryParams
+	getQueryParams,
+	setBasepath,
+	getBasepath
 };

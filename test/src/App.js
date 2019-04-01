@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRoutes, useRedirect, useQueryParams, useInterceptor, A} from '../../dist';
+import {useRoutes, useTitle, useRedirect, useQueryParams, useInterceptor, A} from '../../dist';
 
 const products = {
 	"1": "Rainbow Fish",
@@ -7,23 +7,30 @@ const products = {
 	"3": "Plush Snake",
 };
 
-const Home = () => (
-	<React.Fragment>
-		<h3>Welcome</h3>
-		<p>
-			This is a testing app for the hookrouter module.
-		</p>
-	</React.Fragment>
-);
-const About = () => (
-	<React.Fragment>
-		<h3>About this App</h3>
-		<p>
-			Its really just for testing purposes.
-		</p>
-	</React.Fragment>
-);
+const Home = () => {
+	useTitle('Home');
+	return (
+		<React.Fragment>
+			<h3>Welcome</h3>
+			<p>
+				This is a testing app for the hookrouter module.
+			</p>
+		</React.Fragment>
+	);
+};
+const About = () => {
+	useTitle('About');
+	return (
+		<React.Fragment>
+			<h3>About this App</h3>
+			<p>
+				Its really just for testing purposes.
+			</p>
+		</React.Fragment>
+	);
+};
 const LockIn = () => {
+	useTitle('Lock-In');
 	const stopInterception = useInterceptor((currentPath, nextPath) => {
 		console.log(currentPath, nextPath);
 		return currentPath;
@@ -42,6 +49,7 @@ const LockIn = () => {
 	);
 };
 const Products = () => {
+	useTitle('Products');
 	const [queryParams, setQueryParams] = useQueryParams();
 
 	const {
@@ -74,7 +82,7 @@ const Products = () => {
 };
 
 const Product = ({id}) => {
-
+	useTitle(`Product "${products[id]}"`);
 	return (
 		<React.Fragment>
 			<h3>Buy "{products[id]}" today</h3>
@@ -108,7 +116,7 @@ const App = () => {
 			<nav>
 				<A href="/">Home</A><br/>
 				<A href="/about">About</A><br/>
-				<A href="/prison">Route with Lock-In</A><br />
+				<A href="/prison">Route with Lock-In</A><br/>
 				<A href="/product">Products</A>
 			</nav>
 			<main>

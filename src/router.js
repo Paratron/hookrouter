@@ -7,6 +7,24 @@ let preparedRoutes = {};
 let stack = {};
 let componentId = 1;
 let currentPath = isNode ? '' : location.pathname;
+let basePath = '';
+let basePathRegEx = null;
+
+/**
+ * Will define a base path that will be utilized in your routing and navigation.
+ * To be called _before_ any routing or navigation happens.
+ * @param {string} inBasepath
+ */
+export const setBasepath = (inBasepath) => {
+	basePath = inBasepath;
+	basePathRegEx = new RegExp('^' + basePath);
+};
+
+/**
+ * Returns the currently used base path.
+ * @returns {string}
+ */
+export const getBasepath = () => basePath;
 
 const resolvePath = (inPath) => {
 	if (isNode) {
@@ -57,7 +75,7 @@ const prepareRoute = (inRoute) => {
 export const navigate = (url, replace = false, queryParams = null) => {
 	url = interceptRoute(currentPath, resolvePath(url));
 
-	if(!url || url === currentPath){
+	if (!url || url === currentPath) {
 		return;
 	}
 
@@ -68,7 +86,15 @@ export const navigate = (url, replace = false, queryParams = null) => {
 		processStack();
 		return;
 	}
-	window.history[`${replace ? 'replace' : 'push'}State`](null, null, url);
+
+	const finalURL = basePathRegEx
+		? url.match(basePathRegEx)
+			? url
+			: basePath + url
+		:
+		url;
+
+	window.history[`${replace ? 'replace' : 'push'}State`](null, null, finalURL);
 	processStack();
 
 	if (queryParams) {
@@ -102,7 +128,7 @@ export const getPath = () => customPath;
  */
 export const getWorkingPath = (parentRouterId) => {
 	if (!parentRouterId) {
-		return isNode ? customPath : window.location.pathname || '/';
+		return isNode ? customPath : window.location.pathname.replace(basePathRegEx, '') || '/';
 	}
 	const stackEntry = stack[parentRouterId];
 	if (!stackEntry) {
@@ -138,7 +164,7 @@ if (!isNode) {
 	window.addEventListener('popstate', (e) => {
 		const nextPath = interceptRoute(currentPath, location.pathname);
 
-		if(!nextPath || nextPath === currentPath){
+		if (!nextPath || nextPath === currentPath) {
 			e.preventDefault();
 			e.stopPropagation();
 			history.pushState(null, null, currentPath);
