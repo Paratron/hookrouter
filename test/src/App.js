@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRoutes, useTitle, useRedirect, useQueryParams, useInterceptor, A} from '../../dist';
+import {useRoutes, useTitle, useRedirect, useQueryParams, useInterceptor, A, useLink} from '../../dist';
 
 const products = {
 	"1": "Rainbow Fish",
@@ -74,8 +74,12 @@ const Products = () => {
 								? -1
 								: 1
 					)
-					.map(([id, title]) => <li key={id}><A href={`/product/${id}`}>{title}</A>
-					</li>)}
+					// Note: the link uses the useLink method, but you should prefer using
+					// the hookrouter 'A' component if you are not using a framework that
+					// requires href / onClick to be provided to it
+					.map(([id, title]) => (
+						<li key={id}><a {...useLink({ href: `/product/${id}` })}>{title}</a></li>
+					))}
 			</ul>
 		</React.Fragment>
 	);

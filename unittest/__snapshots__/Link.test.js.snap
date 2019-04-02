@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link.js A renders correctly with href 1`] = `
+<a
+  href="/Paratron/hookrouter"
+  onClick={[Function]}
+>
+  hookrouter
+</a>
+`;
+
+exports[`Link.js A renders correctly with href and onClick 1`] = `
+<a
+  href="/Paratron/hookrouter"
+  onClick={[Function]}
+>
+  hookrouter
+</a>
+`;
+
+exports[`Link.js A renders correctly with href, onClick, and target 1`] = `
+<a
+  href="/Paratron/hookrouter"
+  onClick={[Function]}
+  target="_blank"
+>
+  hookrouter
+</a>
+`;
+
+exports[`Link.js A renders correctly with href, onClick, and target plus basepath 1`] = `
+<a
+  href="/test4/Paratron/hookrouter"
+  onClick={[Function]}
+  target="_blank"
+>
+  hookrouter
+</a>
+`;
