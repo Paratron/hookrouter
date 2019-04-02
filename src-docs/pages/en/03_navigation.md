@@ -3,7 +3,7 @@
 - [Programmatic navigation](#programmatic-navigation)
 - [Redirects](#redirects)
 - [Using the link component](#using-the-link-component)
-- [Intercepting navigation intents](#intervepting-navigation-intents)
+- [Intercepting navigation intents](#intercepting-navigation-intents)
 - [Controlled interceptors](#controlled-interceptors)
 - [Setting a base path](#setting-a-base-path)
 

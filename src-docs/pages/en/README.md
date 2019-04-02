@@ -14,7 +14,7 @@
     - [Programmatic navigation](./03_navigation.md#programmatic-navigation)
     - [Redirects](./03_navigation.md#redirects)
     - [Using the link component](./03_navigation.md#using-the-link-component)
-    - [Intercepting navigation intents](./03_navigation.md#intervepting-navigation-intents)
+    - [Intercepting navigation intents](./03_navigation.md#intercepting-navigation-intents)
     - [Controlled interceptors](./03_navigation.md#controlled-interceptors)
     - [Setting a base path](./03_navigation.md#setting-a-base-path)
 - [Other Features](./04_other-features.md)
