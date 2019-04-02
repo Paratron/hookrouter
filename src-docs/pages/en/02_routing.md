@@ -55,6 +55,56 @@ const routes = {
 ```
 
 ## Nested routing
+You may nest routes so the sub route calls continue to work with a sub part of the
+url.
+
+### Example
+This is your main application:
+```jsx harmony
+import {useRoutes, A} from 'hookrouter';
+
+const routes = {
+    '/': () => <HomePage />,
+    '/about*': () => <AboutArea />
+};
+	
+const MyApp = () => {
+    const routeResult = useRoutes(routes);
+	
+    return (
+        <div>
+            <A href="/about/people">Show about area</A>
+            {routeResult || <NotFoundPage />}			
+        </div>		
+    );
+}
+```
+The asterisk `*` at the end of the route indicates that the URL will continue
+but the later part is handled somewhere else. If the router notices an asterisk
+at the end, it will forward the remaining part of the URL to child routers.
+
+See whats done now inside the `<AboutArea />` component:
+
+```jsx harmony
+import {useRoutes, A} from 'hookrouter';
+
+const routes = {
+    '/people': () => 'We are happy people',
+    '/company': () => 'Our company is nice'
+};
+
+const AboutArea = () => {
+    const routeResult = useRoutes(routes);
+
+    return (
+        <div className="about">
+            <A href="people">About people</A>
+            <A href="company">About our company</A>
+            {routeResult}
+        </div>
+    );
+}
+```
 
 ## Can I use async functions?
 In short: no. You dont even want to use async functions! Your UI needs to be very responsive to any action you user 
