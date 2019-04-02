@@ -1,6 +1,7 @@
 # Serverside rendering
 
 - [Setting the path](#setting-the-path)
+- [Setting query parameters](#setting-query-parameters)
 - [Handling redirects](#handling-redirects)
 - [Handling window title updates](#handling-window-title-updates)
 
