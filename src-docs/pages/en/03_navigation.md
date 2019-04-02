@@ -3,6 +3,7 @@
 - [Programmatic navigation](#programmatic-navigation)
 - [Redirects](#redirects)
 - [Using the link component](#using-the-link-component)
+- [Creating custom link components](#creating-custom-link-components)
 - [Intercepting navigation intents](#intercepting-navigation-intents)
 - [Controlled interceptors](#controlled-interceptors)
 - [Setting a base path](#setting-a-base-path)
@@ -91,6 +92,22 @@ The `A` component works internally with a default `a` HTML tag. It will forward
 all props to it, except an `onClick` function, which will be wrapped by the component,
 since it intercepts the click event, stops the default behavior and pushes the
 URL on the history stack, instead.
+
+## Creating custom link components
+In case you need more control about link components and want to roll out your own, you can use the helper
+function `setLinkProps()` provided by hookrouter.
+
+```jsx
+const MyLinkButton = (props) => {
+    <button {...getLinkProps(props)} className="myButton">Click me now</button>
+}
+```
+
+`setLinkProps()` requires an object as argument with at least the `href` property set. The function will return
+all passed props as-is but might modify the `href`. If also a `onClick` handler is found in the passed props object,
+that function will be wrapped and called after an internal navigation intent has been triggered.
+
+The same function is used internally for creating the Link component.
 
 ## Intercepting navigation intents
 Sometimes it is necessary to interfere with the navigation intents of the user, based on certain conditions. 
