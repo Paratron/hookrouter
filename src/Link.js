@@ -32,7 +32,7 @@ export const setLinkProps = (props) => {
       ? getBasepath() + props.href
       : props.href;
 
-  return {href, onClick};
+  return {...props, href, onClick};
 };
 
 /**
