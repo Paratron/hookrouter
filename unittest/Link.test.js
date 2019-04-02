@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import {navigate, getBasepath} from "../src/router";
-import {A, useLink} from "../src";
+import {A, setLinkProps} from "../src";
 
 // allow us to mock navigate and getBasepath
 jest.mock("../src/router");
@@ -11,12 +11,12 @@ describe('Link.js', () => {
   describe('useLink', () => {
 
     test('throws error when href not supplied', () => {
-      expect(() => useLink()).toThrow();
-      expect(() => useLink({onClick: () => null})).toThrow();
+      expect(() => setLinkProps()).toThrow();
+      expect(() => setLinkProps({onClick: () => null})).toThrow();
     });
 
     test('provides onClick that performs navigation', () => {
-      const {href, onClick} = useLink({href: "test1"});
+      const {href, onClick} = setLinkProps({href: "test1"});
 
       expect(href).toBe("test1");
       expect(onClick).toBeInstanceOf(Function);
@@ -36,7 +36,7 @@ describe('Link.js', () => {
 
     test('wraps onClick and triggers wrapped onClick with event', () => {
       const wrappedOnClick = jest.fn();
-      const {href, onClick} = useLink({href: "test2", onClick: wrappedOnClick});
+      const {href, onClick} = setLinkProps({href: "test2", onClick: wrappedOnClick});
 
       expect(href).toBe("test2");
       expect(onClick).toBeInstanceOf(Function);
@@ -58,7 +58,7 @@ describe('Link.js', () => {
     test('uses getBasepath() when href starts with /', () => {
       getBasepath.mockReturnValue("/test3");
 
-      const {href, onClick} = useLink({href: "/test-basepath"});
+      const {href, onClick} = setLinkProps({href: "/test-basepath"});
 
       expect(href).toBe("/test3/test-basepath");
       expect(onClick).toBeInstanceOf(Function);
