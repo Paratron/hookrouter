@@ -99,7 +99,7 @@ function `setLinkProps()` provided by hookrouter.
 
 ```jsx
 const MyLinkButton = (props) => {
-    <button {...getLinkProps(props)} className="myButton">Click me now</button>
+    <button {...setLinkProps(props)} className="myButton">Click me now</button>
 }
 ```
 
