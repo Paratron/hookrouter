@@ -63,6 +63,8 @@ const MyApp = () => {
 Rule of thumb: apply the redirect right before you use the routing and everything
 is fine ;)
 
+You can pass an object of query parameters as third argument to the `useRedirect()` function. 
+
 
 ## Using the Link component
 
