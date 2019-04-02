@@ -39,6 +39,30 @@ navigate('/test', false, {a: 'hello', b: 'world'});
 ```
 
 ## Redirects
+A redirect automatically forwards the user to a target path, if its source path matches.
+
+Redirects trigger replacement navigation intents, which means there will remain
+one entry in the navigation history. If a forward from `/test` to `/other` happens,
+`/test` will not appear in the browsing history.
+
+
+```jsx harmony
+import {useRoutes, useRedirect} from 'hookrouter';
+
+const routes = {
+    '/greeting': () => 'Nice to meat you 🤤 ',
+};
+
+const MyApp = () => {
+    useRedirect('/', '/greeting');
+    const routeResult = useRoutes(routes);
+
+    return routeResult || 'Not found';
+}
+```
+Rule of thumb: apply the redirect right before you use the routing and everything
+is fine ;)
+
 
 ## Using the Link component
 
