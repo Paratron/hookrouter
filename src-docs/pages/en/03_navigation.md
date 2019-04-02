@@ -174,3 +174,21 @@ const GuardedForm = () => {
 ```
 
 ## Setting a base path
+You can tell the router to ignore a certain path at the beginning of your URLs, if your app is not hosted on the root
+folder of a domain.
+
+Call the `setBasepath()` function before you start rendering your app containing your routers. After calling this function,
+the defined base path will be the root of your application, so when you call `navigate('/about')`,
+or place a Link with `<A href="/about" />`, they will actually lead to `[basepath]/about`.
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {setBasepath} from "hookrouter";
+
+setBasepath('/basepath');
+
+import App from './App';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+```
