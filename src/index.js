@@ -1,4 +1,4 @@
-import {A, useLink} from './Link';
+import {A, setLinkProps} from './Link';
 import useRedirect from './redirect';
 import {useQueryParams, setQueryParams, getQueryParams} from "./queryParams";
 import {useInterceptor} from './interceptor';
@@ -15,7 +15,7 @@ import {
 
 export {
 	A,
-	useLink,
+	setLinkProps,
 	useRedirect,
 	useTitle,
 	getTitle,

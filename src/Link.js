@@ -17,7 +17,7 @@ import {navigate, getBasepath} from "./router";
  *
  * @param {Object} props Requires `href`. `onClick` is optional.
  */
-export const useLink = (props) => {
+export const setLinkProps = (props) => {
   const onClick = (e) => {
     e.preventDefault(); // prevent the link from actually navigating
 
@@ -47,4 +47,4 @@ export const useLink = (props) => {
  *
  * @param {Object} props Requires `href`. `onClick` is optional
  */
-export const A = (props) => <a {...props} {...useLink(props)}/>;
+export const A = (props) => <a {...props} {...setLinkProps(props)}/>;
