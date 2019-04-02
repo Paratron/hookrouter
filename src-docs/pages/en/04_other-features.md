@@ -19,6 +19,9 @@ const AboutPage = () => {
 }
 ```
 
+When the component using the hook gets mounted, the window title will be set. If the component
+gets unmounted, the previous title will be restored.
+
 If you want to utilize the window title in an SSR environment, call `getTitle` after your
 application rendering is done. 
 
