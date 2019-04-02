@@ -22,5 +22,6 @@
     - [Using query parameters](./04_other-features.md#using-query-parameters)
 - [Serverside Rendering](./05_serverside-rendering.md)
     - [Setting the path](./05_serverside-rendering.md#setting-the-path)
+    - [Setting query parameters](./05_serverside-rendering.md#setting-query-parameters)
     - [Handling redirects](./05_serverside-rendering.md#handling-redirects)
     - [Handling window title updates](./05_serverside-rendering.md#handling-window-title-updates)
