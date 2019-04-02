@@ -4,15 +4,18 @@ A different approach to utilize a routing functionality in react.
 I am using this router in an application which is running in production right now without any errors so far.
 Until I found the time to write some real unit/integration tests for this router, it will remain in beta tough.
 
-Tested with `React 16.8.1`.
+Tested from `React 16.8.1` up to `React 16.8.5`.
 
 ## How to install
 Well, this is straightforward:
 
     npm i hookrouter
+    
+    
+## Documentation
+Detailed documentation about how to use hookrouter can be [found here](https://github.com/Paratron/hookrouter/blob/master/src-docs/pages/en/README.md)
 
-## How to use
-A quick example:
+## A quick example
 ```jsx harmony
 import {useRoutes} from 'hookrouter';
 
@@ -37,127 +40,3 @@ to your components.
 
 The hook will return whatever the route function returned, so you may also return
 strings, arrays, React fragments, null - whatever you like.
-
-## Navigation
-You can either navigate by importing the function `navigate()` from the package,
-or by importing the modified link component `A`. 
-
-### Example with `navigate()`
-```jsx harmony
-import {useRoutes, navigate} from 'hookrouter';
-
-const routes = {
-    '/': () => <HomePage />,
-    '/products/:id': ({id}) => <ProductDetails id={id} />
-};
-	
-const handleClick = () => {
-    navigate('/products/12');
-};
-	
-const MyApp = () => {
-    const routeResult = useRoutes(routes);
-    
-    return (
-        <div>
-            <Button onClick={handleClick}>Show my product</Button>
-            {routeResult || <NotFoundPage />}			
-        </div>		
-    );
-}
-```
-
-### Example with link component
-```jsx harmony
-import {useRoutes, A} from 'hookrouter';
-
-const routes = {
-    '/': () => <HomePage />,
-    '/products/:id': ({id}) => <ProductDetails id={id} />
-};
-	
-const MyApp = () => {
-    const routeResult = useRoutes(routes);
-	
-	return (
-        <div>
-            <A href="/products/12">Show my product</A>
-            {routeResult || <NotFoundPage />}			
-        </div>		
-	);
-}
-```
-The `A` component works internally with a default `a` HTML tag. It will forward
-all props to it, except an `onClick` function, which will be wrapped by the component,
-since it intercepts the click event, stops the default behavior and pushes the
-URL on the history stack, instead.
-
-## Nesting Routes
-You may nest routes so the sub route calls continue to work with a sub part of the
-url.
-
-### Example
-This is your main application:
-```jsx harmony
-import {useRoutes, A} from 'hookrouter';
-
-const routes = {
-    '/': () => <HomePage />,
-    '/about*': () => <AboutArea />
-};
-	
-const MyApp = () => {
-    const routeResult = useRoutes(routes);
-	
-    return (
-        <div>
-            <A href="/about/people">Show about area</A>
-            {routeResult || <NotFoundPage />}			
-        </div>		
-    );
-}
-```
-The asterisk `*` at the end of the route indicates that the URL will continue
-but the later part is handled somewhere else. If the router notices an asterisk
-at the end, it will forward the remaining part of the URL to child routers.
-
-See whats done now inside the `<AboutArea />` component:
-
-```jsx harmony
-import {useRoutes, A} from 'hookrouter';
-
-const routes = {
-    '/people': () => 'We are happy people',
-    '/company': () => 'Our company is nice'
-};
-
-const AboutArea = () => {
-    const routeResult = useRoutes(routes);
-
-    return (
-        <div className="about">
-            <A href="people">About people</A>
-            <A href="company">About our company</A>
-            {routeResult}
-        </div>
-    );
-}
-```
-
-### Using redirects
-```jsx harmony
-import {useRoutes, useRedirect} from 'hookrouter';
-
-const routes = {
-    '/greeting': () => 'Nice to meat you 🤤 ',
-};
-
-const MyApp = () => {
-    useRedirect('/', '/greeting');
-    const routeResult = useRoutes(routes);
-
-    return routeResult || 'Not found';
-}
-```
-Rule of thumb: apply the redirect right before you use the routing and everything
-is fine ;)
