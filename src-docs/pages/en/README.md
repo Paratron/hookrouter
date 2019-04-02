@@ -23,3 +23,4 @@
 - [Serverside Rendering](./05_serverside-rendering.md)
     - [Setting the path](./05_serverside-rendering.md#setting-the-path)
     - [Handling redirects](./05_serverside-rendering.md#handling-redirects)
+    - [Handling window title updates](./05_serverside-rendering.md#handling-window-title-updates)
