@@ -67,6 +67,29 @@ You can pass an object of query parameters as third argument to the `useRedirect
 
 
 ## Using the Link component
+```jsx harmony
+import {useRoutes, A} from 'hookrouter';
+
+const routes = {
+    '/': () => <HomePage />,
+    '/products/:id': ({id}) => <ProductDetails id={id} />
+};
+	
+const MyApp = () => {
+    const routeResult = useRoutes(routes);
+	
+	return (
+        <div>
+            <A href="/products/12">Show my product</A>
+            {routeResult || <NotFoundPage />}			
+        </div>		
+	);
+}
+```
+The `A` component works internally with a default `a` HTML tag. It will forward
+all props to it, except an `onClick` function, which will be wrapped by the component,
+since it intercepts the click event, stops the default behavior and pushes the
+URL on the history stack, instead.
 
 ## Intercepting navigation intents
 Sometimes it is necessary to interfere with the navigation intents of the user, based on certain conditions. 
