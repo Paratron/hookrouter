@@ -1,27 +1,50 @@
 import React from "react";
 import {navigate, getBasepath} from "./router";
 
-const A = (props) => {
-	const {onClick: originalOnClick} = props;
-	const basePath = getBasepath();
+/**
+ * Accepts HTML `a`-tag properties, requiring `href` and optionally
+ * `onClick`, which are appropriately wrapped to allow other
+ * frameworks to be used for creating `hookrouter` navigatable links.
+ *
+ * If `onClick` is supplied, then the navigation will happen before
+ * the supplied `onClick` action!
+ *
+ * @example
+ *
+ * &lt;MyFrameworkLink what="ever" {...useLink({ href: '/' })}&gt;
+ *   Link text
+ * &lt;/MyFrameworkLink&gt;
+ *
+ * @param {Object} props Requires `href`. `onClick` is optional.
+ */
+export const useLink = (props) => {
+  const onClick = (e) => {
+    e.preventDefault(); // prevent the link from actually navigating
 
-	const onClick = (e) => {
-		e.preventDefault();
+    navigate(e.currentTarget.href);
 
-		navigate(e.currentTarget.href);
+    if (props.onClick) {
+      props.onClick(e);
+    }
+  };
+  const href =
+    props.href.substr(0, 1) === '/'
+      ? getBasepath() + props.href
+      : props.href;
 
-		if (originalOnClick) {
-			originalOnClick(e);
-		}
-	};
-
-	const href = props.href.substr(0, 1) === '/'
-		? basePath + props.href
-		: props.href;
-
-	return (
-		<a {...props} href={href} onClick={onClick}/>
-	);
+  return {href, onClick};
 };
 
-export default A;
+/**
+ * Accepts standard HTML `a`-tag properties. `href` and, optionally,
+ * `onClick` are used to create links that work with `hookrouter`.
+ *
+ * @example
+ *
+ * &lt;A href="/" target="_blank"&gt;
+ *   Home
+ * &lt;/A&gt;
+ *
+ * @param {Object} props Requires `href`. `onClick` is optional
+ */
+export const A = (props) => <a {...props} {...useLink(props)}/>;
