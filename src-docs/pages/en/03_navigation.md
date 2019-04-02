@@ -4,6 +4,7 @@
 - [Redirects](#redirects)
 - [Using the link component](#using-the-link-component)
 - [Intercepting navigation intents](#intervepting-navigation-intents)
+- [Controlled interceptors](#controlled-interceptors)
 - [Setting a base path](#setting-a-base-path)
 
 ## Programmatic navigation
@@ -116,7 +117,11 @@ const GuardedForm = () => {
         navigate('/success');
     }
     
-       
+    return (
+        <form onSubmit={handleSubmit}>
+            ...
+        </form>
+    );
 }
 ```
 
@@ -134,5 +139,38 @@ they will be called in a chain with the last registered interceptor being called
 the current path, no other interceptors down the chain will be asked anymore.
 
 You can manually stop the intercepor as well. The hook will return a function that cancels the interceptor.
+
+## Controlled interceptors
+While the interceptor gives very granular control about navigation intents, it requires a synchronous
+response to the question if a navigation intent should be stopped, or not.
+
+I have included a second interceptor hook which based on the first one hands the control over to
+your react component to make use of custom UI constructs to handle the intent.
+
+```jsx
+const GuardedForm = () => {
+    const [nextPath, confirmNavigation, resetPath, stopInterception] = useControlledInterceptor();
+    
+    const handleSubmit = () => {
+            saveData();
+            stopInterception();
+            navigate('/success');
+    };
+    
+    return (
+        <React.Fragment>
+            {nextPath && (
+                <ConfirmPopup 
+                    onConfirm={confirmNavigation}
+                    onCancel={resetPath}
+                />
+            ) }
+            <form onSubmit={handleSubmit}>
+                ...
+            </form>
+        </React.Fragment>
+    ); 
+}
+```
 
 ## Setting a base path
