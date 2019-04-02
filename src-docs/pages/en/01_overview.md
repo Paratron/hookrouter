@@ -1,21 +1,17 @@
-# React Hook Router
+# Overview
 
-A different approach to utilize a routing functionality in react.
-I am using this router in an application which is running in production right now without any errors so far.
-Until I found the time to write some real unit/integration tests for this router, it will remain in beta tough.
+- [Installation](#installation)
+- [Quick example](#quick-example)
 
-Tested from `React 16.8.1` up to `React 16.8.5`.
+## Installation
+Install this module and save it as a dependency:
 
-## How to install
-Well, this is straightforward:
+    npm install --save hookrouter
 
-    npm i hookrouter
-    
-    
-## Documentation
-Detailed documentation about how to use hookrouter can be [found here](https://github.com/Paratron/hookrouter/blob/master/src-docs/pages/en/README.md)
 
-## A quick example
+## Quick example
+
+A quick example:
 ```jsx harmony
 import {useRoutes} from 'hookrouter';
 
@@ -40,3 +36,4 @@ to your components.
 
 The hook will return whatever the route function returned, so you may also return
 strings, arrays, React fragments, null - whatever you like.
+
