@@ -38,5 +38,5 @@ export const useControlledInterceptor = () => {
 		[setInterceptedPath]
 	);
 
-	return [interceptedPath, confirmNavigation, resetPath];
+	return [interceptedPath, confirmNavigation, resetPath, stopInterception];
 };
