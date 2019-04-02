@@ -1,8 +1,9 @@
 import React from "react";
-import {navigate} from "./router";
+import {navigate, getBasepath} from "./router";
 
 const A = (props) => {
 	const {onClick: originalOnClick} = props;
+	const basePath = getBasepath();
 
 	const onClick = (e) => {
 		e.preventDefault();
@@ -14,8 +15,12 @@ const A = (props) => {
 		}
 	};
 
+	const href = props.href.substr(0, 1) === '/'
+		? basePath + props.href
+		: props.href;
+
 	return (
-		<a {...props} onClick={onClick}/>
+		<a {...props} href={href} onClick={onClick}/>
 	);
 };
 

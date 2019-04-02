@@ -7,9 +7,27 @@ let preparedRoutes = {};
 let stack = {};
 let componentId = 1;
 let currentPath = isNode ? '' : location.pathname;
+let basePath = '';
+let basePathRegEx = null;
+
+/**
+ * Will define a base path that will be utilized in your routing and navigation.
+ * To be called _before_ any routing or navigation happens.
+ * @param {string} inBasepath
+ */
+export const setBasepath = (inBasepath) => {
+	basePath = inBasepath;
+	basePathRegEx = new RegExp('^' + basePath);
+};
+
+/**
+ * Returns the currently used base path.
+ * @returns {string}
+ */
+export const getBasepath = () => basePath;
 
 const resolvePath = (inPath) => {
-	if(isNode){
+	if (isNode) {
 		const url = require('url');
 		return url.resolve(currentPath, inPath);
 	}
@@ -51,17 +69,32 @@ const prepareRoute = (inRoute) => {
 /**
  * Virtually navigates the browser to the given URL and re-processes all routers.
  * @param {string} url The URL to navigate to. Do not mix adding GET params here and using the `getParams` argument.
+ * @param {boolean} [replace=false] Should the navigation be done with a history replace to prevent back navigation by the user
  * @param {object} [queryParams] Key/Value pairs to convert into get parameters to be appended to the URL.
  */
-export const navigate = (url, queryParams) => {
-	url = currentPath = interceptRoute(currentPath, resolvePath(url));
+export const navigate = (url, replace = false, queryParams = null) => {
+	url = interceptRoute(currentPath, resolvePath(url));
+
+	if (!url || url === currentPath) {
+		return;
+	}
+
+	currentPath = url;
 
 	if (isNode) {
 		setPath(url);
 		processStack();
 		return;
 	}
-	window.history.pushState(null, null, url);
+
+	const finalURL = basePathRegEx
+		? url.match(basePathRegEx)
+			? url
+			: basePath + url
+		:
+		url;
+
+	window.history[`${replace ? 'replace' : 'push'}State`](null, null, finalURL);
 	processStack();
 
 	if (queryParams) {
@@ -73,7 +106,6 @@ let customPath = '/';
 /**
  * Enables you to manually set the path from outside in a nodeJS environment, where window.history is not available.
  * @param {string} inPath
- * @param {object} [queryParams] Optionally add an object of query parameters to the URL.
  */
 export const setPath = (inPath) => {
 	const url = require('url');
@@ -95,7 +127,7 @@ export const getPath = () => customPath;
  */
 export const getWorkingPath = (parentRouterId) => {
 	if (!parentRouterId) {
-		return isNode ? customPath : window.location.pathname || '/';
+		return isNode ? customPath : window.location.pathname.replace(basePathRegEx, '') || '/';
 	}
 	const stackEntry = stack[parentRouterId];
 	if (!stackEntry) {
@@ -116,30 +148,29 @@ const processStack = () => Object.keys(stack).forEach(process);
  * @return {boolean}
  */
 const objectsEqual = (objA, objB) => {
-	const objAKeys = Object.keys(objA).sort();
-	const objBKeys = Object.keys(objB).sort();
+	const objAKeys = Object.keys(objA);
+	const objBKeys = Object.keys(objB);
 
-	if (objAKeys.length !== objBKeys.length) {
-		return false;
-	}
+	const valueIsEqual = key => objB.hasOwnProperty(key) && objA[key] === objB[key];
 
-	for (let i = 0; i < objAKeys.length; i++) {
-		if (objAKeys[i] !== objBKeys[i]) {
-			return false;
-		}
-		const key = objAKeys[i];
-
-		if (objA[key] !== objB[key]) {
-			return false;
-		}
-	}
-	return true;
+	return (
+		objAKeys.length === objBKeys.length
+		&& objAKeys.every(valueIsEqual)
+	);
 };
 
 if (!isNode) {
-	window.addEventListener('popstate', () => {
-		const nextPath = currentPath = interceptRoute(currentPath, location.pathname);
-		if(nextPath !== location.pathname){
+	window.addEventListener('popstate', (e) => {
+		const nextPath = interceptRoute(currentPath, location.pathname);
+
+		if (!nextPath || nextPath === currentPath) {
+			e.preventDefault();
+			e.stopPropagation();
+			history.pushState(null, null, currentPath);
+			return;
+		}
+
+		if (nextPath !== location.pathname) {
 			history.replaceState(null, null, nextPath);
 		}
 		processStack();
