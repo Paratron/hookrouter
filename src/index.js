@@ -3,7 +3,7 @@ import useRedirect from './redirect';
 import {useQueryParams, setQueryParams, getQueryParams} from "./queryParams";
 import {useInterceptor} from './interceptor';
 import {useControlledInterceptor} from './controlledInterceptor';
-import {useTitle} from './title';
+import {useTitle, getTitle} from './title';
 import {
 	navigate,
 	useRoutes,
@@ -17,6 +17,7 @@ export {
 	A,
 	useRedirect,
 	useTitle,
+	getTitle,
 	useQueryParams,
 	useInterceptor,
 	useControlledInterceptor,
