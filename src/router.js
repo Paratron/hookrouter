@@ -261,7 +261,7 @@ const process = (routerId) => {
 		passContext: route ? route.substr(-1) === '*' : false
 	});
 
-	if (funcsDiffer || propsDiffer) {
+	if (funcsDiffer || propsDiffer || route === null) {
 		setUpdate(Date.now());
 	}
 };
