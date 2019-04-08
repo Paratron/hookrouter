@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest unittest/",
     "prepublishOnly": "cross-env NODE_ENV=production babel ./src --out-dir ./dist -s inline",
-    "preTest": "npm run prepublishOnly && babel ./test/src --out-dir ./test/dist -s inline && npm run webpack",
+    "preTest": "babel ./src --out-dir ./dist -s inline && babel ./test/src --out-dir ./test/dist -s inline && npm run webpack",
     "webpack": "webpack ./test/dist/index.js -o ./test/dist/pack.js --devtool source-map",
     "testServer": "http-server ./test"
   },
