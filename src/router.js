@@ -170,6 +170,8 @@ if (!isNode) {
 			return;
 		}
 
+		currentPath = nextPath;
+
 		if (nextPath !== location.pathname) {
 			history.replaceState(null, null, nextPath);
 		}
