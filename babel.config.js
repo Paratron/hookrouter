@@ -1,11 +1,17 @@
 module.exports = function (api) {
-  const presets = [ "@babel/preset-env", "@babel/preset-react" ];
-  const plugins = [ ];
+	// Resolve ES2015+ only before publishing to NPM
+	if (process.env['NODE_ENV'] === 'production') {
+		presets.push('@babel/preset-env');
+	}
 
-  api.cache(false);
+	presets.push('@babel/preset-react');
 
-  return {
-    presets,
-    plugins
-  };
+	const plugins = [];
+
+	api.cache(false);
+
+	return {
+		presets,
+		plugins
+	};
 };

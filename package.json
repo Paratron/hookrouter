@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest unittest/",
-    "prepublishOnly": "babel ./src --out-dir ./dist -s inline",
+    "prepublishOnly": "cross-env NODE_ENV=production babel ./src --out-dir ./dist -s inline",
     "preTest": "npm run prepublishOnly && babel ./test/src --out-dir ./test/dist -s inline && npm run webpack",
     "webpack": "webpack ./test/dist/index.js -o ./test/dist/pack.js --devtool source-map",
     "testServer": "http-server ./test"
@@ -31,6 +31,7 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
+    "cross-env": "5.2.0",
     "http-server": "0.11.1",
     "jest": "24.6.0",
     "node": "11.12.0",
