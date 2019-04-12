@@ -9,6 +9,7 @@ import {
 	useRoutes,
 	setPath,
 	getPath,
+	getWorkingPath,
 	setBasepath,
 	getBasepath,
 } from './router';
@@ -26,6 +27,7 @@ export {
 	useRoutes,
 	setPath,
 	getPath,
+	getWorkingPath,
 	setQueryParams,
 	getQueryParams,
 	setBasepath,
