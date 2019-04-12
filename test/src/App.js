@@ -1,5 +1,6 @@
 import React from 'react';
-import {useRoutes, useTitle, useRedirect, useQueryParams, useInterceptor, A, useLink} from '../../dist';
+import {useRoutes, useTitle, useRedirect, useQueryParams, useInterceptor, A, setLinkProps} from '../../dist';
+import QPTest from './QueryParamTest';
 
 const products = {
 	"1": "Rainbow Fish",
@@ -74,11 +75,11 @@ const Products = () => {
 								? -1
 								: 1
 					)
-					// Note: the link uses the useLink method, but you should prefer using
+					// Note: the link uses the setLinkProps method, but you should prefer using
 					// the hookrouter 'A' component if you are not using a framework that
 					// requires href / onClick to be provided to it
 					.map(([id, title]) => (
-						<li key={id}><a {...useLink({ href: `/product/${id}` })}>{title}</a></li>
+						<li key={id}><a {...setLinkProps({ href: `/product/${id}` })}>{title}</a></li>
 					))}
 			</ul>
 		</React.Fragment>
@@ -107,7 +108,8 @@ const routes = {
 	'/about': () => <About/>,
 	'/prison': () => <LockIn/>,
 	'/product': () => <Products/>,
-	'/product/:id*': ({id}) => <Product id={id}/>
+	'/product/:id*': ({id}) => <Product id={id}/>,
+	'/qpTest': () => <QPTest/>
 };
 
 const App = () => {
@@ -121,7 +123,8 @@ const App = () => {
 				<A href="/">Home</A><br/>
 				<A href="/about">About</A><br/>
 				<A href="/prison">Route with Lock-In</A><br/>
-				<A href="/product">Products</A>
+				<A href="/product">Products</A><br />
+				<A href="/qpTest">Query Params Test</A>
 			</nav>
 			<main>
 				{routeResult || '404 - Not found'}
