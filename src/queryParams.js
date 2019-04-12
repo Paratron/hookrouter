@@ -12,7 +12,11 @@ export const setQueryParams = (inObj) => {
 	const now = Date.now();
 	queryParamListeners.forEach(cb => cb(now));
 	if (!isNode) {
-		history.replaceState(null, null, location.pathname + '?' + objectToQueryString(inObj));
+		const qs = '?' + objectToQueryString(queryParamObject);
+		if(qs === location.search) {
+			return;
+		}
+		history.replaceState(null, null, location.pathname + (qs !== '?' ? qs : ''));
 	}
 };
 
