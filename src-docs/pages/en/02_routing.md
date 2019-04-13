@@ -142,7 +142,7 @@ are going to fetch that object in our central `<ProductPage />` component:
 
 const routes = {
     '/' => () => (product) => <GeneralInfo product={product} />,
-    '/details' () => (product) => <Techdetails product={product} />,
+    '/details': () => (product) => <Techdetails product={product} />,
     '/buy': () => (product) => <BuyOptions product={product} />
     '/buy/:variant': ({variant}) => (product) => <Buy product={product} variant={variant} />
 };
