@@ -137,7 +137,7 @@ export const getWorkingPath = (parentRouterId) => {
 	return stackEntry.reducedPath !== null ? stackEntry.reducedPath || '/' : window.location.pathname;
 };
 
-const processStack = () => Object.keys(stack).forEach(process);
+const processStack = () => Object.values(stack).forEach(process);
 
 /**
  * This function takes two objects and compares if they have the same
@@ -185,15 +185,16 @@ const emptyFunc = () => null;
  * This will calculate the match of a given router.
  * @param routerId
  */
-const process = (routerId) => {
+const process = (stackObj) => {
 	const {
+		routerId,
 		parentRouterId,
 		routes,
 		setUpdate,
 		resultFunc,
 		resultProps,
 		reducedPath: previousReducedPath
-	} = stack[routerId];
+	} = stackObj;
 
 	const currentPath = getWorkingPath(parentRouterId);
 	let route = null;
@@ -306,7 +307,7 @@ export const useRoutes = (routeObj) => {
 
 		stack[routerId] = stackObj;
 
-		process(routerId);
+		process(stackObj);
 	}
 
 	React.useDebugValue(stackObj.matchedRoute);
