@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRoutes, useTitle, useRedirect, useQueryParams, useInterceptor, useControlledInterceptor, A, setLinkProps} from '../../dist';
+import {useRoutes, useTitle, usePath, useRedirect, useQueryParams, useInterceptor, useControlledInterceptor, A, setLinkProps} from '../../dist';
 import QPTest from './QueryParamTest';
 
 const products = {
@@ -135,13 +135,23 @@ const routes = {
 	'/qpTest': () => <QPTest/>
 };
 
+const PathLabel = () => {
+	const path = usePath();
+	return <p>Current path: {path}</p>;
+};
+
+const RouteContainer = () => {
+	const routeResult = useRoutes(routes);
+	return routeResult || '404 - Not found';
+};
+
 const App = () => {
 	useRedirect('/', '/welcome');
-	const routeResult = useRoutes(routes);
 
 	return (
 		<React.Fragment>
 			<h1>HookRouter test app</h1>
+			<PathLabel/>
 			<nav>
 				<A href="/">Home</A><br/>
 				<A href="/about">About</A><br/>
@@ -151,7 +161,7 @@ const App = () => {
 				<A href="/qpTest">Query Params Test</A>
 			</nav>
 			<main>
-				{routeResult || '404 - Not found'}
+				<RouteContainer/>
 			</main>
 		</React.Fragment>
 	);
