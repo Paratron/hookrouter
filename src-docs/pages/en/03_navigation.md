@@ -40,6 +40,12 @@ navigate('/test?a=hello&b=world');
 navigate('/test', false, {a: 'hello', b: 'world'});
 ```
 
+Please note that if you do a navigation with query parameters, old query parameters will be dropped. This is unlike
+the default behavior of `useQueryParams`, where parameters will be _appended_. If you would like your query parameters
+to be appended upon navigation, pass `false` as fourth argument (`replaceQueryParams`): `navigate('/test', false, {...}, false)`.
+
+Also note that if you do a navigation with query parameters already encoded into the URI, `useQueryParams` hooks won't be updated! 
+
 ## Redirects
 A redirect automatically forwards the user to a target path, if its source path matches.
 
@@ -92,13 +98,6 @@ The `A` component works internally with a default `a` HTML tag. It will forward
 all props to it, except an `onClick` function, which will be wrapped by the component,
 since it intercepts the click event, stops the default behavior and pushes the
 URL on the history stack, instead.
-
-To detect if link href matches the current working path, to indicate _active_ state, `getWorkingPath` function can be used:
-```jsx
-import {getWorkingPath} from 'hookrouter'
-
-let isSignIn = getWorkingPath() === '/sign-in'
-```
 
 
 ## Creating custom link components
