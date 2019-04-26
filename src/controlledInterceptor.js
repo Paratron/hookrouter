@@ -15,8 +15,8 @@ import {navigate} from "./router";
 export const useControlledInterceptor = () => {
 	const [interceptedPath, setInterceptedPath] = React.useState(null);
 
-	const interceptorFunction = React.useCallback(
-		() => (nextPath, currentPath) => {
+	const interceptorFunction = React.useMemo(
+		() => (currentPath, nextPath) => {
 			setInterceptedPath(nextPath);
 			return currentPath;
 		},
@@ -25,15 +25,15 @@ export const useControlledInterceptor = () => {
 
 	const stopInterception = useInterceptor(interceptorFunction);
 
-	const confirmNavigation = React.useCallback(
+	const confirmNavigation = React.useMemo(
 		() => () => {
 			stopInterception();
 			navigate(interceptedPath);
 		},
-		[interceptedPath]
+		[stopInterception, interceptedPath]
 	);
 
-	const resetPath = React.useCallback(
+	const resetPath = React.useMemo(
 		() => () => setInterceptedPath(null),
 		[setInterceptedPath]
 	);
