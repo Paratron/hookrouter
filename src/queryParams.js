@@ -4,11 +4,15 @@ import isNode from './isNode';
 const queryParamListeners = [];
 let queryParamObject = {};
 
-export const setQueryParams = (inObj) => {
+export const setQueryParams = (inObj, replace = false) => {
 	if(!(inObj instanceof Object)){
 		throw new Error('Object required');
 	}
-	Object.assign(queryParamObject, inObj);
+	if(replace){
+		queryParamObject = inObj;
+	} else {
+		Object.assign(queryParamObject, inObj);
+	}
 	const now = Date.now();
 	queryParamListeners.forEach(cb => cb(now));
 	if (!isNode) {
