@@ -71,8 +71,9 @@ const prepareRoute = (inRoute) => {
  * @param {string} url The URL to navigate to. Do not mix adding GET params here and using the `getParams` argument.
  * @param {boolean} [replace=false] Should the navigation be done with a history replace to prevent back navigation by the user
  * @param {object} [queryParams] Key/Value pairs to convert into get parameters to be appended to the URL.
+ * @param {boolean} [replaceQueryParams=true] Should existing query parameters be carried over, or dropped (replaced)?
  */
-export const navigate = (url, replace = false, queryParams = null) => {
+export const navigate = (url, replace = false, queryParams = null, replaceQueryParams = true) => {
 	url = interceptRoute(currentPath, resolvePath(url));
 
 	if (!url || url === currentPath) {
@@ -98,7 +99,7 @@ export const navigate = (url, replace = false, queryParams = null) => {
 	processStack();
 
 	if (queryParams) {
-		setQueryParams(queryParams);
+		setQueryParams(queryParams, replaceQueryParams);
 	}
 };
 
