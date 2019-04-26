@@ -12,6 +12,7 @@ import {
 	getWorkingPath,
 	setBasepath,
 	getBasepath,
+	usePath,
 } from './router';
 
 export {
@@ -31,5 +32,6 @@ export {
 	setQueryParams,
 	getQueryParams,
 	setBasepath,
-	getBasepath
+	getBasepath,
+	usePath
 };

@@ -9,6 +9,7 @@ let componentId = 1;
 let currentPath = isNode ? '' : location.pathname;
 let basePath = '';
 let basePathRegEx = null;
+const pathUpdaters = [];
 
 /**
  * Will define a base path that will be utilized in your routing and navigation.
@@ -85,6 +86,7 @@ export const navigate = (url, replace = false, queryParams = null, replaceQueryP
 	if (isNode) {
 		setPath(url);
 		processStack();
+		updatePathHooks();
 		return;
 	}
 
@@ -97,6 +99,7 @@ export const navigate = (url, replace = false, queryParams = null, replaceQueryP
 
 	window.history[`${replace ? 'replace' : 'push'}State`](null, null, finalURL);
 	processStack();
+	updatePathHooks();
 
 	if (queryParams) {
 		setQueryParams(queryParams, replaceQueryParams);
@@ -118,6 +121,43 @@ export const setPath = (inPath) => {
  * @returns {string}
  */
 export const getPath = () => customPath;
+
+/**
+ * This hook returns the currently used URI.
+ * Works in a browser context as well as for SSR.
+ *
+ * _Heads up:_ This will make your component render on every navigation unless you set this hook to passive!
+ * @param {boolean} [active=true] Will update the component upon path changes. Set to false to only retrieve the path, once.
+ * @param {boolean} [withBasepath=false] Should the base path be left at the beginning of the URI?
+ * @returns {string}
+ */
+export const usePath = (active = true, withBasepath = false) => {
+	const [,setUpdate] = React.useState(0);
+
+	React.useEffect(() => {
+		if(!active){
+			return;
+		}
+
+		pathUpdaters.push(setUpdate);
+		return () => {
+			const index = pathUpdaters.indexOf(setUpdate);
+			if(index !== -1){
+				pathUpdaters.splice(index, 1);
+			}
+		};
+	}, [setUpdate]);
+
+	return withBasepath ? currentPath : currentPath.replace(basePathRegEx, '');
+};
+
+/**
+ * Render all components that use path hooks.
+ */
+const updatePathHooks = () => {
+	const now = Date.now();
+	pathUpdaters.forEach(cb => cb(now));
+};
 
 /**
  * Called from within the router. This returns either the current windows url path
