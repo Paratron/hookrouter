@@ -80,12 +80,12 @@ const routes = {
 const MyApp = () => {
     const routeResult = useRoutes(routes);
 
-	return (
+    return (
         <div>
             <A href="/products/12">Show my product</A>
             {routeResult || <NotFoundPage />}
         </div>
-	);
+    );
 }
 ```
 The `A` component works internally with a default `a` HTML tag. It will forward
