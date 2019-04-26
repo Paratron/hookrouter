@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRoutes, useTitle, useRedirect, useQueryParams, useInterceptor, A, setLinkProps} from '../../dist';
+import {useRoutes, useTitle, useRedirect, useQueryParams, useInterceptor, useControlledInterceptor, A, setLinkProps} from '../../dist';
 import QPTest from './QueryParamTest';
 
 const products = {
@@ -49,6 +49,28 @@ const LockIn = () => {
 		</React.Fragment>
 	);
 };
+
+const TimeTrap = () => {
+	const [nextPath, confirmNavigation] = useControlledInterceptor();
+
+	React.useEffect(() => {
+		if(!nextPath){
+			return;
+		}
+		console.log(nextPath);
+		setTimeout(confirmNavigation, 1000);
+	}, [nextPath]);
+
+	return (
+		<React.Fragment>
+			<h3>Time trap</h3>
+			<p>
+				Navigate somewhere else. I will wait a second, before I let you go.
+			</p>
+		</React.Fragment>
+	);
+};
+
 const Products = () => {
 	useTitle('Products');
 	const [queryParams, setQueryParams] = useQueryParams();
@@ -107,6 +129,7 @@ const routes = {
 	'/welcome': () => <Home/>,
 	'/about': () => <About/>,
 	'/prison': () => <LockIn/>,
+	'/timeTrap': () => <TimeTrap />,
 	'/product': () => <Products/>,
 	'/product/:id*': ({id}) => <Product id={id}/>,
 	'/qpTest': () => <QPTest/>
@@ -123,6 +146,7 @@ const App = () => {
 				<A href="/">Home</A><br/>
 				<A href="/about">About</A><br/>
 				<A href="/prison">Route with Lock-In</A><br/>
+				<A href="/timeTrap">Route that defers navigation</A><br />
 				<A href="/product">Products</A><br />
 				<A href="/qpTest">Query Params Test</A>
 			</nav>
