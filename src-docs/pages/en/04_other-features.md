@@ -83,3 +83,20 @@ const SearchHeader = () => {
 ```
 
 If `<SearchWidget />` updates the query string, `<SearchHeader />` gets re-rendered.
+
+## Using the URI path
+
+In case you need to make use of the current URI path, you can use the `usePath()` hook:
+
+```jsx
+import {usePath} from 'hookrouter';
+
+const PathLabel = () => {
+    const path = usePath();
+    return <span>Your current location: {path}</span>;
+}
+``` 
+
+The hook will automatically render the component again, if the path changes. If you don't need that,
+you can use the hook in passive mode: `usePath(false)` and it just returns the current path when the component
+renders and does not trigger renders upon path change.
