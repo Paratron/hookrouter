@@ -21,6 +21,7 @@
 - [Other Features](./04_other-features.md)
     - [Setting the window title](./04_other-features.md#setting-the-window-title)
     - [Using query parameters](./04_other-features.md#using-query-parameters)
+    - [Using the URI path](./04_other-features.md#using-the-uri-path)
 - [Serverside Rendering](./05_serverside-rendering.md)
     - [Setting the path](./05_serverside-rendering.md#setting-the-path)
     - [Setting query parameters](./05_serverside-rendering.md#setting-query-parameters)
