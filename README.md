@@ -1,10 +1,8 @@
 # React Hook Router
 
 A different approach to utilize a routing functionality in react.
-I am using this router in an application which is running in production right now without any errors so far.
-Until I found the time to write some real unit/integration tests for this router, it will remain in beta tough.
 
-Tested from `React 16.8.1` up to `React 16.8.5`.
+Tested from `React 16.8.1` upwards.
 
 ## How to install
 Well, this is straightforward:
