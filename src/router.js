@@ -132,17 +132,17 @@ export const getPath = () => customPath;
  * @returns {string}
  */
 export const usePath = (active = true, withBasepath = false) => {
-	const [,setUpdate] = React.useState(0);
+	const [, setUpdate] = React.useState(0);
 
 	React.useEffect(() => {
-		if(!active){
+		if (!active) {
 			return;
 		}
 
 		pathUpdaters.push(setUpdate);
 		return () => {
 			const index = pathUpdaters.indexOf(setUpdate);
-			if(index !== -1){
+			if (index !== -1) {
 				pathUpdaters.splice(index, 1);
 			}
 		};
@@ -224,9 +224,10 @@ const emptyFunc = () => null;
 
 /**
  * This will calculate the match of a given router.
- * @param routerId
+ * @param {object} stackObj
+ * @param {boolean} [directCall] If its not a direct call, the process function might trigger a component render.
  */
-const process = (stackObj) => {
+const process = (stackObj, directCall) => {
 	const {
 		routerId,
 		parentRouterId,
@@ -297,17 +298,35 @@ const process = (stackObj) => {
 		}
 	}
 
+	const result = funcsDiffer || propsDiffer
+		? targetFunction
+			? targetFunction(targetProps)
+			: null
+		: stackObj.result;
+
 	Object.assign(stack[routerId], {
-		resultFunc: targetFunction,
-		resultProps: targetProps,
+		result,
 		reducedPath,
 		matchedRoute: route,
 		passContext: route ? route.substr(-1) === '*' : false
 	});
 
-	if (funcsDiffer || propsDiffer || route === null) {
+	if (!directCall && (funcsDiffer || propsDiffer || route === null)) {
 		setUpdate(Date.now());
 	}
+};
+
+/**
+ * If a route returns a function, instead of a react element, we need to wrap this function
+ * to eventually wrap a context object around its result.
+ * @param RouteContext
+ * @param originalResult
+ * @returns {function(): *}
+ */
+const wrapperFunction = (RouteContext, originalResult) => function (){
+	return (
+		<RouteContext>{originalResult.apply(originalResult, arguments)}</RouteContext>
+	);
 };
 
 /**
@@ -320,35 +339,42 @@ const process = (stackObj) => {
  */
 export const useRoutes = (routeObj) => {
 	// Each router gets an internal id to look them up again.
-	const [routerId] = React.useState('rtr_' + componentId++);
+	const [routerId] = React.useState(componentId);
 	const setUpdate = React.useState(0)[1];
 	// Needed to create nested routers which use only a subset of the URL.
 	const parentRouterId = React.useContext(ParentContext);
 
+	// If we just took the last ID, increase it for the next hook.
+	if (routerId === componentId) {
+		componentId += 1;
+	}
+
 	// Removes the router from the stack after component unmount - it won't be processed anymore.
-	React.useEffect(() => () => {
-		delete stack[routerId];
-	}, [routerId]);
+	React.useEffect(() => () => delete stack[routerId], [routerId]);
 
 	let stackObj = stack[routerId];
+
+	if (stackObj && stackObj.originalRouteObj !== routeObj) {
+		stackObj = null;
+	}
 
 	if (!stackObj) {
 		stackObj = {
 			routerId,
+			originalRouteObj: routeObj,
 			routes: Object.entries(routeObj),
 			setUpdate,
 			parentRouterId,
 			matchedRoute: null,
 			reducedPath: null,
-			resultFunc: null,
 			passContext: false,
-			resultProps: {},
+			result: null,
 			deathTimer: null,
 		};
 
 		stack[routerId] = stackObj;
 
-		process(stackObj);
+		process(stackObj, true);
 	}
 
 	React.useDebugValue(stackObj.matchedRoute);
@@ -357,22 +383,19 @@ export const useRoutes = (routeObj) => {
 		return null;
 	}
 
-	const RouteContext = ({children}) => <ParentContext.Provider value={routerId}>{children}</ParentContext.Provider>;
+	let result = stackObj.result;
 
-	const originalResult = stackObj.resultFunc(stackObj.resultProps);
-	let result = originalResult;
+	if (!stackObj.passContext) {
+		return result;
+	} else {
+		const RouteContext = ({children}) => <ParentContext.Provider value={routerId}>{children}</ParentContext.Provider>;
 
-	const wrapper = function () {
-		return (
-			<RouteContext>{originalResult.apply(originalResult, arguments)}</RouteContext>
-		);
-	};
+		if (typeof result === 'function') {
+			return wrapperFunction(RouteContext, result);
+		}
 
-	if (typeof originalResult === 'function') {
-		result = wrapper;
+		return React.isValidElement(result) && result.type !== RouteContext
+			? <RouteContext>{result}</RouteContext>
+			: result;
 	}
-
-	return stackObj.passContext && React.isValidElement(result) && result.type !== RouteContext
-		? <RouteContext>{result}</RouteContext>
-		: result;
 };
