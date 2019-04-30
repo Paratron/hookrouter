@@ -1,5 +1,15 @@
 import React from 'react';
-import {useRoutes, useTitle, usePath, useRedirect, useQueryParams, useInterceptor, useControlledInterceptor, A, setLinkProps} from '../../dist';
+import {
+	useRoutes,
+	useTitle,
+	usePath,
+	useRedirect,
+	useQueryParams,
+	useInterceptor,
+	useControlledInterceptor,
+	A,
+	setLinkProps
+} from '../../dist';
 import QPTest from './QueryParamTest';
 
 const products = {
@@ -54,7 +64,7 @@ const TimeTrap = () => {
 	const [nextPath, confirmNavigation] = useControlledInterceptor();
 
 	React.useEffect(() => {
-		if(!nextPath){
+		if (!nextPath) {
 			return;
 		}
 		console.log(nextPath);
@@ -101,7 +111,7 @@ const Products = () => {
 					// the hookrouter 'A' component if you are not using a framework that
 					// requires href / onClick to be provided to it
 					.map(([id, title]) => (
-						<li key={id}><a {...setLinkProps({ href: `/product/${id}` })}>{title}</a></li>
+						<li key={id}><a {...setLinkProps({href: `/product/${id}`})}>{title}</a></li>
 					))}
 			</ul>
 		</React.Fragment>
@@ -129,7 +139,7 @@ const routes = {
 	'/welcome': () => <Home/>,
 	'/about': () => <About/>,
 	'/prison': () => <LockIn/>,
-	'/timeTrap': () => <TimeTrap />,
+	'/timeTrap': () => <TimeTrap/>,
 	'/product': () => <Products/>,
 	'/product/:id*': ({id}) => <Product id={id}/>,
 	'/qpTest': () => <QPTest/>
@@ -140,9 +150,20 @@ const PathLabel = () => {
 	return <p>Current path: {path}</p>;
 };
 
+const SmartNotFound = () => {
+	const path = usePath();
+	return (
+		<React.Fragment>
+			<h3>404 - Not Found</h3>
+			<p>Current path: {path}</p>
+		</React.Fragment>
+	);
+};
+
 const RouteContainer = () => {
-	const routeResult = useRoutes(routes);
-	return routeResult || '404 - Not found';
+	// We simulate passing a fresh routes object on every call, here.
+	const routeResult = useRoutes(Object.assign({}, routes));
+	return routeResult || <SmartNotFound />;
 };
 
 const App = () => {
@@ -156,9 +177,11 @@ const App = () => {
 				<A href="/">Home</A><br/>
 				<A href="/about">About</A><br/>
 				<A href="/prison">Route with Lock-In</A><br/>
-				<A href="/timeTrap">Route that defers navigation</A><br />
-				<A href="/product">Products</A><br />
-				<A href="/qpTest">Query Params Test</A>
+				<A href="/timeTrap">Route that defers navigation</A><br/>
+				<A href="/product">Products</A><br/>
+				<A href="/qpTest">Query Params Test</A><br />
+				<A href="/nf1">This route does not exist</A><br />
+				<A href="/nf2">This route does not exist as well</A>
 			</nav>
 			<main>
 				<RouteContainer/>
