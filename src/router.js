@@ -368,8 +368,7 @@ export const useRoutes = (routeObj) => {
 			matchedRoute: null,
 			reducedPath: null,
 			passContext: false,
-			result: null,
-			deathTimer: null,
+			result: null
 		};
 
 		stack[routerId] = stackObj;
