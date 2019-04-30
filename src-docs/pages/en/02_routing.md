@@ -19,6 +19,9 @@ const routes = {
 }
 ```
 
+> __Heads up:__    
+> Its recommendable to define the routes object _outside_ of your components. If you define it inside a component, the whole object will be re-created upon every render.
+
 The callback functions are important so your components will only be created when a route matched and that function 
 got called.
 
@@ -39,6 +42,9 @@ const MyApp = () => {
     return match || <NotFoundPage />;
 }
 ```
+
+> __Important to know__    
+> Hookrouter will cache the route results. Because of that, your route result functions should be pure (side effect free). This means they should only rely on the parameters that are passed into the functions. If you want to pass additional data, [there is a pattern for that](#passing-additional-data-to-route-functions).
 
 ## URL parameters
 Your paths may contain parts that should be consumed as parameters for your application. For example, a product page 
