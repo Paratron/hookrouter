@@ -18,21 +18,22 @@ import {navigate, getBasepath} from "./router";
  * @param {Object} props Requires `href`. `onClick` is optional.
  */
 export const setLinkProps = (props) => {
-  const onClick = (e) => {
-    e.preventDefault(); // prevent the link from actually navigating
+	const onClick = (e) => {
+		if (!e.shiftKey && !e.ctrlKey && !e.altKey) {
+			e.preventDefault(); // prevent the link from actually navigating
+			navigate(e.currentTarget.href);
+		}
 
-    navigate(e.currentTarget.href);
+		if (props.onClick) {
+			props.onClick(e);
+		}
+	};
+	const href =
+		props.href.substr(0, 1) === '/'
+			? getBasepath() + props.href
+			: props.href;
 
-    if (props.onClick) {
-      props.onClick(e);
-    }
-  };
-  const href =
-    props.href.substr(0, 1) === '/'
-      ? getBasepath() + props.href
-      : props.href;
-
-  return {...props, href, onClick};
+	return {...props, href, onClick};
 };
 
 /**
