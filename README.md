@@ -1,6 +1,6 @@
 # React Hook Router
 
-A different approach to utilize a routing functionality in react.
+The modern alternative to react-router.
 
 Tested from `React 16.8.1` upwards.
 
@@ -8,6 +8,15 @@ Tested from `React 16.8.1` upwards.
 Well, this is straightforward:
 
     npm i hookrouter
+
+## Typescript
+This project is not and will not be written in typescript.
+
+Thanks to the github user @mcaneris, you can install types via:
+
+    npm i @types/hookrouter
+    
+I did not check if those types are correct nor will I keep them up to date with future releases. 
     
     
 ## Documentation
