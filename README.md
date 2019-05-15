@@ -12,7 +12,7 @@ Well, this is straightforward:
 ## Typescript
 This project is not and will not be written in typescript.
 
-Thanks to the github user @mcaneris, you can install types via:
+Thanks to the github user [@mcaneris](/mcaneris), you can install types via:
 
     npm i @types/hookrouter
     
