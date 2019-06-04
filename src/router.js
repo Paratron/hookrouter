@@ -217,6 +217,7 @@ if (!isNode) {
 			history.replaceState(null, null, nextPath);
 		}
 		processStack();
+		updatePathHooks();
 	});
 }
 
