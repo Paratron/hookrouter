@@ -8,6 +8,9 @@ Install this module and save it as a dependency:
 
     npm install --save hookrouter
 
+Add IE support for queryParams by installing a URLSearchParams polyfill, and importing it in an init js file before your app loads
+
+    import 'url-search-params-polyfill'
 
 ## Quick example
 
