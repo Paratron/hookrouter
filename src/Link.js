@@ -19,7 +19,7 @@ import {navigate, getBasepath} from "./router";
  */
 export const setLinkProps = (props) => {
 	const onClick = (e) => {
-		if (!e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey) {
+		if (!isModifiedClick(e)) {
 			e.preventDefault(); // prevent the link from actually navigating
 			navigate(e.currentTarget.href);
 		}
@@ -35,6 +35,10 @@ export const setLinkProps = (props) => {
 
 	return {...props, href, onClick};
 };
+
+function isModifiedClick(event) {
+	return  e.shiftKey || e.ctrlKey || e.altKey || e.metaKey || e.which == 2 || e.button == 4
+}
 
 /**
  * Accepts standard HTML `a`-tag properties. `href` and, optionally,
