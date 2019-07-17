@@ -35,7 +35,7 @@ const resolvePath = (inPath) => {
 
 	const current = new URL(currentPath, location.href);
 	const resolved = new URL(inPath, current);
-	return resolved.pathname;
+	return resolved.toString();
 };
 
 export const ParentContext = React.createContext(null);
