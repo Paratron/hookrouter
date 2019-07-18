@@ -1,7 +1,7 @@
 import React from 'react';
 import isNode from './isNode';
 
-const queryParamListeners = [];
+const queryParamListeners = new Set();
 let queryParamObject = {};
 
 export const setQueryParams = (inObj, replace = false) => {
@@ -31,7 +31,7 @@ export const getQueryParams = () => Object.assign({}, queryParamObject);
  * @param {string} inStr
  * @return {object}
  */
-const queryStringToObject = (inStr) => {
+export const queryStringToObject = (inStr) => {
 	const p = new URLSearchParams(inStr);
 	let result = {};
 	for (let param of p) {
@@ -68,15 +68,8 @@ export const useQueryParams = () => {
 	const setUpdate = React.useState(0)[1];
 
 	React.useEffect(() => {
-		queryParamListeners.push(setUpdate);
-
-		return () => {
-			const index = queryParamListeners.indexOf(setUpdate);
-			if (index === -1) {
-				return;
-			}
-			queryParamListeners.splice(index, 1);
-		};
+		queryParamListeners.add(setUpdate);
+		return () => queryParamListeners.delete(setUpdate);
 	}, [setUpdate]);
 
 	return [queryParamObject, setQueryParams];

@@ -1,6 +1,6 @@
 import React from 'react';
 import isNode from './isNode';
-import {setQueryParams} from './queryParams';
+import {setQueryParams, queryStringToObject} from './queryParams';
 import {interceptRoute} from './interceptor';
 
 let preparedRoutes = {};
@@ -35,7 +35,7 @@ const resolvePath = (inPath) => {
 
 	const current = new URL(currentPath, location.href);
 	const resolved = new URL(inPath, current);
-	return resolved.toString();
+	return resolved;
 };
 
 export const ParentContext = React.createContext(null);
@@ -101,10 +101,24 @@ export const navigate = (url, replace = false, queryParams = null, replaceQueryP
 	processStack();
 	updatePathHooks();
 
+	if (!queryParams) {
+		url = new URL(url)
+		queryParams = url.search && entriesToObject(url.searchParams.entries())
+	}
+
 	if (queryParams) {
 		setQueryParams(queryParams, replaceQueryParams);
 	}
 };
+
+function entriesToObject(entries) {
+  let result = {}
+  for(let entry of entries) { // each 'entry' is a [key, value] tupple
+    const [key, value] = entry;
+    result[key] = value;
+  }
+  return result;
+}
 
 let customPath = '/';
 /**
