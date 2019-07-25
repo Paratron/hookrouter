@@ -30,13 +30,14 @@ const routes = {
     '/': () => <HomePage />,
     '/about': () => <AboutPage />,
     '/products': () => <ProductOverview />,
-    '/products/:id': ({id}) => <ProductDetails id={id} />
+    '/products/:id': ({id}) => <ProductDetails id={id} />,
+     '*': () => <NotFoundPage />
 };
 	
 const MyApp = () => {
     const routeResult = useRoutes(routes);
     
-    return routeResult || <NotFoundPage />;
+    return routeResult;
 }
 ```
 Routes are defined as an object. Keys are the routes, which are matched
