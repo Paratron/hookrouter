@@ -51,9 +51,43 @@ const objectToQueryString = (inObj) => {
 	return qs.toString();
 };
 
-if(!isNode){
-	queryParamObject = queryStringToObject(location.search.substr(1));
+const buildQueryParamObject = () => {
+  if(!isNode){
+	  queryParamObject = queryStringToObject(location.search.substr(1));
+  }
 }
+
+buildQueryParamObject();
+
+/**
+ * Tracks previous value
+ */
+function track (fn, handler, before) {
+  return function interceptor () {
+    if (before) {
+      handler.apply(this, arguments)
+      return fn.apply(this, arguments)
+    } else {
+      var result = fn.apply(this, arguments)
+      handler.apply(this, arguments)
+      return result
+    }
+  }
+}
+
+var oldPath = location.pathname
+
+function urlChangeHandler () {
+  if (oldPath !== location.pathname) {
+    oldPath = location.pathname;
+    buildQueryParamObject();
+  }
+}
+
+// Assign listeners
+history.pushState = track(history.pushState, urlChangeHandler)
+history.replaceState = track(history.replaceState, urlChangeHandler)
+window.addEventListener('popstate', urlChangeHandler)
 
 /**
  * This hook returns the currently set query parameters as object and offers a setter function
