@@ -21,7 +21,7 @@ export const setLinkProps = (props) => {
 	const onClick = (e) => {
 		if (!e.shiftKey && !e.ctrlKey && !e.altKey) {
 			e.preventDefault(); // prevent the link from actually navigating
-			navigate(e.currentTarget.href);
+			navigate(e.currentTarget.attributes["href"]);
 		}
 
 		if (props.onClick) {
