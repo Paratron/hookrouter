@@ -1,6 +1,6 @@
 {
-  "name": "hookrouter",
-  "version": "1.2.3",
+  "name": "@alexkreidler/hookrouter",
+  "version": "1.2.4",
   "description": "A hook based router for React",
   "main": "dist/index.js",
   "scripts": {
