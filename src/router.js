@@ -204,7 +204,7 @@ if (!isNode) {
 	window.addEventListener('popstate', (e) => {
 		const nextPath = interceptRoute(currentPath, location.pathname);
 
-		if (!nextPath || nextPath === currentPath) {
+		if (currentPath !== location.pathname && (!nextPath || nextPath === currentPath)) {
 			e.preventDefault();
 			e.stopPropagation();
 			history.pushState(null, null, currentPath);
