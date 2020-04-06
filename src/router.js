@@ -18,7 +18,7 @@ const pathUpdaters = [];
  */
 export const setBasepath = (inBasepath) => {
 	basePath = inBasepath;
-	basePathRegEx = new RegExp('^' + basePath);
+	basePathRegEx = new RegExp('^' + basePath, 'i');
 };
 
 /**
