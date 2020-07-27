@@ -5,7 +5,7 @@ const useRedirect = (fromURL, toURL, queryParams = null, replace = true) => {
 	const parentRouterId = React.useContext(ParentContext);
 	const currentPath = getWorkingPath(parentRouterId);
 
-	if (currentPath === fromURL) {
+	if (currentPath === fromURL || currentPath.includes(fromURL)) {
 		navigate(parentRouterId ? `.${toURL}` : toURL, replace, queryParams);
 	}
 };
