@@ -1,6 +1,6 @@
 import React from "react";
 import { create, act, ReactTestRenderer } from 'react-test-renderer';
-import { SubscribableRouter, RouterProvider } from "./routes"
+import { SubscribableRouter, RouterProvider } from "./routes";
 
 export function mountHook(hookCall: Function, routerObject: SubscribableRouter) {
     const HookComponent = hookCall;

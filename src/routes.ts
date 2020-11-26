@@ -63,7 +63,7 @@ export function getPathProps(pathMatcher: string): [RegExp | string, string[]] {
         return [pathMatcher, []];
     }
     const propNames: string[] = [];
-    let regexString = pathMatcher;
+    let regexString = `^${pathMatcher.replace(/\./g, "\\.")}$`;
     pathProps.forEach(propName => {
         propNames.push(propName.substr(1, propName.length - 2));
         regexString = regexString.replace(propName, `(.+?)`);
@@ -73,11 +73,11 @@ export function getPathProps(pathMatcher: string): [RegExp | string, string[]] {
 
 type PreparedRoute<T> = [RegExp | string, string[], RouteFunction<T>];
 
-function prepareRoutes<T>(receipt: RoutesObject<T>): PreparedRoute<T>[] {
+export function prepareRoutes<T>(receipt: RoutesObject<T>): PreparedRoute<T>[] {
     return Object.entries(receipt).map(([matcher, routeFunction]) => [...getPathProps(matcher), routeFunction]);
 }
 
-function findRoute<T>(preparedRoutes: PreparedRoute<T>[], path: string): T | null {
+export function findRoute<T>(preparedRoutes: PreparedRoute<T>[], path: string): T | null {
     for(let i = 0; i < preparedRoutes.length; i++){
         const [matcher, propNames, routeFunction] = preparedRoutes[i];
         if(typeof matcher === "string"){
@@ -86,7 +86,7 @@ function findRoute<T>(preparedRoutes: PreparedRoute<T>[], path: string): T | nul
             }
             continue;
         }
-        let props = matcher.exec(path);
+        let props = path.match(matcher);
         if (props) {
             props.shift();
             return routeFunction(props.reduce((obj: {[key: string]: string}, value, i) => {

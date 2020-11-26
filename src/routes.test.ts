@@ -1,17 +1,46 @@
-import { createMemoryRouter, getPathProps, useRoutes } from "./routes";
+import { createMemoryRouter, findRoute, getPathProps, prepareRoutes, useRoutes } from "./routes";
 import { mountHook } from "./_testHelper"
 
 describe("Helpers", () => {
+    const routes = {
+        "/a/static/route": () => "a",
+        "/with/[slug]/": (props: any) => props,
+        "/more/[complicated]/stuff-[here].html": (props: any) => props
+    };
+
+    test("findRoute", () => {
+        const prepared = prepareRoutes(routes);
+        expect(findRoute(prepared, "/a/static/route")).toBe("a");
+        expect(findRoute(prepared, "/with/test/")).toMatchObject({slug: "test"});
+        expect(findRoute(prepared, "/more/test/stuff-1gfd1212.html")).toMatchObject({complicated: "test", here: "1gfd1212"});
+    });
+
+    test("prepareRoutes", () => {
+        const prepared = prepareRoutes(routes);
+
+        expect(prepared.length).toBe(3);
+        expect(prepared[0][0]).toBe(Object.keys(routes)[0]);
+        expect(prepared[0][1].length).toBe(0);
+
+        // @ts-ignore
+        expect(prepared[1][0].source).toBe(/^\/with\/(.+?)\/$/.source);
+        expect(prepared[1][1]).toMatchObject(["slug"]);
+
+        //@ts-ignore
+        expect(prepared[2][0].source).toBe(/^\/more\/(.+?)\/stuff-(.+?)\.html$/.source);
+        expect(prepared[2][1]).toMatchObject(["complicated", "here"]);
+    });
+
     test("getPathProps", () => {
         const [regex, propNames] = getPathProps("/my/[test]/path.html");
         // @ts-ignore
-        expect(regex.source).toBe(`\\/my\\/(.+?)\\/path.html`);
+        expect(regex.source).toBe(/^\/my\/(.+?)\/path\.html$/.source);
         expect(propNames).toMatchObject(["test"]);
 
         {
             const [regex, propNames] = getPathProps("/my/[foo]/path-[bar].html");
             // @ts-ignore
-            expect(regex.source).toBe(`\\/my\\/(.+?)\\/path-(.+?).html`);
+            expect(regex.source).toBe(/^\/my\/(.+?)\/path-(.+?)\.html$/.source);
             expect(propNames).toMatchObject(["foo", "bar"]);
         }
 
@@ -62,15 +91,21 @@ describe("useRoutes", () => {
     });
 
     it("Extracts parameters from a url", () => {
-        let routeParams;
+        let routeParams = null;
 
         const routes = {
-            "/route/[slug]/id_[id].html": jest.fn((params) => routeParams = params)
+            "/route/[slug]/id_[id].html": jest.fn((params) => {routeParams = params; return null;})
         };
 
-        const router = createMemoryRouter("/route/foo/id_bar.html");
-        const { act, root } = mountHook(() => useRoutes(routes), router);
+        const router = createMemoryRouter("/route/products/id_12512.html");
+        const { act } = mountHook(() => useRoutes(routes), router);
         expect(routes["/route/[slug]/id_[id].html"]).toHaveBeenCalled();
+        expect(routeParams).toMatchObject({ slug: "products", id: "12512" });
+
+        act(() => {
+            router.navigate("/route/foo/id_bar.html")
+        });
+        expect(routes["/route/[slug]/id_[id].html"]).toHaveBeenCalledTimes(2);
         expect(routeParams).toMatchObject({ slug: "foo", id: "bar" });
     });
 });
