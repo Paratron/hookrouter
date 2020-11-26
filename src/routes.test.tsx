@@ -1,5 +1,7 @@
-import { createMemoryRouter, findRoute, getPathProps, prepareRoutes, useRoutes } from "./routes";
+import React from "react";
+import { RouterProvider, createMemoryRouter, findRoute, getPathProps, prepareRoutes, useRoutes } from "./routes";
 import { mountHook } from "./_testHelper"
+import TestRenderer from "react-test-renderer";
 
 describe("Helpers", () => {
     const routes = {
@@ -107,5 +109,51 @@ describe("useRoutes", () => {
         });
         expect(routes["/route/[slug]/id_[id].html"]).toHaveBeenCalledTimes(2);
         expect(routeParams).toMatchObject({ slug: "foo", id: "bar" });
+    });
+
+    it("Can handle nested routes", () => {
+        const router = createMemoryRouter("/");
+
+        const parentRoutes = {
+            "/": () => <Landing />,
+            "/category/[category]*": ({category}: {category: string}) => <Category id={category} />
+        };
+
+        const childRoutes = {
+            "/": () => (category: string) => `Welcome to ${category}`
+        };
+
+        const App = () => {
+            const result = useRoutes(parentRoutes);
+            return <div>{result || "Root broken"}</div>;
+        };
+
+        const Landing = () => {
+            return <a href="/category/trashware/">Show Category</a>;
+        };
+
+        const Category = ({id}: {id: string}) => {
+            const result = useRoutes(childRoutes);
+
+            return <div>{result ? result(id) : "Not found"}</div>;
+        };
+
+        const renderer = TestRenderer.create((
+            <RouterProvider router={router}>
+                <App />
+            </RouterProvider>
+        ));
+
+        const instance = renderer.root;
+
+        expect(instance.findByProps({href: "/category/trashware/"}).children).toEqual(['Show Category']);
+
+        TestRenderer.act(() => {
+            router.navigate("/category/trashware/");
+        });
+
+        expect(instance.findByType(Category).children).toEqual(["Welcome to trashware"]);
+
+        console.log(renderer.toJSON());
     });
 });
