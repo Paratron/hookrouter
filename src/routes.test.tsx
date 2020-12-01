@@ -7,7 +7,8 @@ describe("Helpers", () => {
     const routes = {
         "/a/static/route": () => "a",
         "/with/[slug]/": (props: any) => props,
-        "/more/[complicated]/stuff-[here].html": (props: any) => props
+        "/more/[complicated]/stuff-[here].html": (props: any) => props,
+        "/withChildren*": () => null
     };
 
     test("findRoute", () => {
@@ -20,7 +21,7 @@ describe("Helpers", () => {
     test("prepareRoutes", () => {
         const prepared = prepareRoutes(routes);
 
-        expect(prepared.length).toBe(3);
+        expect(prepared.length).toBe(Object.keys(routes).length);
         expect(prepared[0][0]).toBe(Object.keys(routes)[0]);
         expect(prepared[0][1].length).toBe(0);
 
@@ -31,6 +32,9 @@ describe("Helpers", () => {
         //@ts-ignore
         expect(prepared[2][0].source).toBe(/^\/more\/(.+?)\/stuff-(.+?)\.html$/.source);
         expect(prepared[2][1]).toMatchObject(["complicated", "here"]);
+
+        //@ts-ignore
+        expect(prepared[3][0].source).toBe(/^\/withChildren\//.source);
     });
 
     test("getPathProps", () => {
