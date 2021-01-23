@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Paratron/hookrouter#readme",
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": "^16.8.0 || ^17.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -35,9 +35,9 @@
     "http-server": "0.11.1",
     "jest": "24.6.0",
     "node": "11.12.0",
-    "react": "16.8.2",
-    "react-dom": "16.8.5",
-    "react-test-renderer": "16.8.5",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.5",
+    "react-test-renderer": "^16.8.5",
     "webpack": "4.29.6",
     "webpack-cli": "3.3.0"
   }
