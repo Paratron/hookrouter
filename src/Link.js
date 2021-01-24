@@ -19,7 +19,7 @@ import {navigate, getBasepath} from "./router";
  */
 export const setLinkProps = (props) => {
 	const onClick = (e) => {
-		if (!e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey && props.target !== "_blank")) {
+		if (!e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey && props.target !== "_blank") {
 			e.preventDefault(); // prevent the link from actually navigating
 			navigate(e.currentTarget.href);
 		}
