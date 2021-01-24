@@ -48,4 +48,6 @@ export const setLinkProps = (props) => {
  *
  * @param {Object} props Requires `href`. `onClick` is optional
  */
-export const A = (props) => <a {...setLinkProps(props)} />;
+export const A = React.forwardRef(
+   (props, ref) => <a ref={ref} {...setLinkProps(props)} />
+);
