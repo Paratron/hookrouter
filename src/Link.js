@@ -19,7 +19,7 @@ import {navigate, getBasepath} from "./router";
  */
 export const setLinkProps = (props) => {
 	const onClick = (e) => {
-		if (!e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey && props.target !== "_blank")) {
+		if (!e.shiftKey && !e.ctrlKey && !e.altKey && !e.metaKey && props.target !== "_blank") {
 			e.preventDefault(); // prevent the link from actually navigating
 			navigate(e.currentTarget.href);
 		}
@@ -48,4 +48,6 @@ export const setLinkProps = (props) => {
  *
  * @param {Object} props Requires `href`. `onClick` is optional
  */
-export const A = (props) => <a {...setLinkProps(props)} />;
+export const A = React.forwardRef(
+   (props, ref) => <a ref={ref} {...setLinkProps(props)} />
+);
