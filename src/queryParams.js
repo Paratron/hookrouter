@@ -20,7 +20,7 @@ export const setQueryParams = (inObj, replace = false) => {
 		if(qs === location.search) {
 			return;
 		}
-		history.replaceState(null, null, location.pathname + (qs !== '?' ? qs : ''));
+		history.replaceState(null, null, location.pathname + (qs !== '?' ? qs : '') + location.hash);
 	}
 };
 
