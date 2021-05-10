@@ -1,10 +1,10 @@
 {
   "name": "hookrouter",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "description": "A hook based router for React",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest unittest/",
+    "test": "jest",
     "prepublishOnly": "cross-env NODE_ENV=production babel ./src --out-dir ./dist -s inline",
     "preTest": "babel ./src --out-dir ./dist -s inline && babel ./test/src --out-dir ./test/dist -s inline && npm run webpack",
     "webpack": "webpack ./test/dist/index.js -o ./test/dist/pack.js --devtool source-map",
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Paratron/hookrouter#readme",
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": "16.8 - 17.x"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -32,13 +32,15 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "cross-env": "5.2.0",
-    "http-server": "0.11.1",
-    "jest": "24.6.0",
-    "node": "11.12.0",
-    "react": "16.8.2",
-    "react-dom": "16.8.5",
-    "react-test-renderer": "16.8.5",
-    "webpack": "4.29.6",
-    "webpack-cli": "3.3.0"
+    "http-server": "^0.12.3",
+    "jest": "^26.6.3",
+    "n": "^7.2.2",
+    "node": "^14.16.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-test-renderer": "^17.0.2",
+    "url": "^0.11.0",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.7.0"
   }
 }
