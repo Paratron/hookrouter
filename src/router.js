@@ -239,6 +239,10 @@ const process = (stackObj, directCall) => {
 		reducedPath: previousReducedPath
 	} = stackObj;
 
+	if (!stack[routerId]) {
+		return;
+	}
+
 	const currentPath = getWorkingPath(parentRouterId);
 	let route = null;
 	let targetFunction = null;
@@ -268,10 +272,6 @@ const process = (stackObj, directCall) => {
 		reducedPath = currentPath.replace(result[0], '');
 		anyMatched = true;
 		break;
-	}
-
-	if (!stack[routerId]) {
-		return;
 	}
 
 	if (!anyMatched) {
