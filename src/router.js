@@ -172,6 +172,7 @@ export const getWorkingPath = (parentRouterId) => {
 	}
 	const stackEntry = stack[parentRouterId];
 	if (!stackEntry) {
+    // this should not be reached at all
 		throw 'wth';
 	}
 
