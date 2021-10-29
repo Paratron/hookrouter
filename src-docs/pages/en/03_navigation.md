@@ -9,6 +9,10 @@
 - [Setting a base path](#setting-a-base-path)
 
 ## Programmatic navigation
+
+```import {navigate} from 'hookrouter';
+```
+
 If you want to send your user somewhere, you can call the `navigate(url, [replace], [queryParams])` function from the
 hookrouter package. You pass an URL (both relative or absolute) and the navigation will happen. After the navigation,
 all previous matches will be re-evaluated if they are valid anymore or if some components need to be swapped.
