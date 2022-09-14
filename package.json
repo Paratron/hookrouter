@@ -1,8 +1,9 @@
 {
   "name": "hookrouter",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "A hook based router for React",
   "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "jest unittest/",
     "prepublishOnly": "cross-env NODE_ENV=production babel ./src --out-dir ./dist -s inline",
@@ -12,10 +13,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Paratron/hookrouter.git"
+    "url": "git+ssh://git@github.com/victorkur/hookrouter.git"
   },
   "files": [
-    "dist/*"
+    "dist/*",
+	"types/*.d.ts"
   ],
   "author": "Christian Engel <christian.engel@wearekiss.com>",
   "license": "ISC",
@@ -24,21 +26,21 @@
   },
   "homepage": "https://github.com/Paratron/hookrouter#readme",
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.0.0"
+    "react": "^17.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.3.1",
-    "@babel/preset-react": "^7.0.0",
-    "cross-env": "5.2.0",
-    "http-server": "0.11.1",
-    "jest": "24.6.0",
-    "node": "11.12.0",
-    "react": "^16.8.2",
-    "react-dom": "^16.8.5",
-    "react-test-renderer": "^16.8.5",
-    "webpack": "4.29.6",
-    "webpack-cli": "3.3.0"
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "@babel/preset-react": "^7.14.5",
+    "cross-env": "^7.0.3",
+    "http-server": "^0.12.3",
+    "jest": "^27.0.6",
+    "node": "^16.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-test-renderer": "^17.0.2",
+    "webpack": "^5.45.1",
+    "webpack-cli": "^4.7.2"
   }
 }
