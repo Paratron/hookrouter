@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/victorkur/hookrouter.git"
+    "url": "git+ssh://git@github.com/Paratron/hookrouter.git"
   },
   "files": [
     "dist/*",
