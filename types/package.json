@@ -1,0 +1,32 @@
+{
+    "name": "@types/hookrouter",
+    "version": "2.2.5",
+    "description": "TypeScript definitions for hookrouter",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Mete Can Eris",
+            "url": "https://github.com/mcaneris",
+            "githubUsername": "mcaneris"
+        },
+        {
+            "name": "Sam Calvert",
+            "url": "https://github.com/sam-outschool",
+            "githubUsername": "sam-outschool"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/hookrouter"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/react": "*",
+        "csstype": "^3.0.2"
+    },
+    "typesPublisherContentHash": "fccdd1b29e9c9035d59fd99b4e8190af85cc633a4c7fb5862ddfbbe52cc535c8",
+    "typeScriptVersion": "3.4"
+}
